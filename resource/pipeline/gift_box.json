@@ -46,7 +46,7 @@
     "GiftOnPage": {
         "description": "礼物盒页识别（OCR 标题「礼物盒」）→ 转去一键领取。",
         "recognition": "OCR",
-        "expected": "礼物盒",
+        "expected": "礼物盒|禮物盒",
         "roi": [
             100,
             10,
@@ -83,7 +83,7 @@
     "GiftClaim": {
         "description": "礼物盒页「一键领取」（一次通常领完列表全部，实测 9 件一次清空）。max_hit=3 允许重试几次；按钮灰掉时点击无效、无害。识别不到 → 关闭收尾。",
         "recognition": "OCR",
-        "expected": "一键领取|键领取",
+        "expected": "一键领取|键领取|一鍵領取|鍵領取|一併領取|併領取|一供领取|领取|領取",
         "roi": [
             700,
             615,
@@ -124,7 +124,7 @@
     "GiftClose": {
         "description": "礼物盒页左下「关闭」→ 关掉后多半已在主界面，故先试房子图标、再直接判主界面收尾。",
         "recognition": "OCR",
-        "expected": "关闭",
+        "expected": "关闭|關閉|關開",
         "roi": [
             380,
             600,

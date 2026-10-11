@@ -441,7 +441,7 @@
     "FLClickSkip": {
         "description": "编队页「跳过」按钮（打开「确认跳过」面板，此时还未消耗）。【2026-10-03】next 改为先经 FLSkipTierPick 选档，再点面板里的「跳过」执行。",
         "recognition": "OCR",
-        "expected": "跳过",
+        "expected": "跳过|跳過",
         "roi": [
             700,
             640,
@@ -459,7 +459,7 @@
     "FLClickSkipConfirm": {
         "description": "「确认跳过」面板里的「跳过」按钮 —— 点下去才真正消耗（跳过券 + 选定档位）。由 FLSkipTierPick 选完档后进来。",
         "recognition": "OCR",
-        "expected": "跳过",
+        "expected": "跳过|跳過",
         "roi": [
             700,
             640,
@@ -479,7 +479,7 @@
     "FLPopupClose": {
         "description": "通用：新功能解锁类弹窗（如「录音室练习功能解锁」）→ 点「关闭」。先 OCR 认标题再点固定坐标，不盲点。",
         "recognition": "OCR",
-        "expected": ".*功能解锁.*",
+        "expected": ".*功能解锁.*|.*功能解鎖.*",
         "roi": [
             480,
             110,
@@ -563,7 +563,7 @@
     "FLBackTeam": {
         "description": "确认已回到编队页（还能看到「跳过」）→ 回到循环头部做下一轮。",
         "recognition": "OCR",
-        "expected": "跳过",
+        "expected": "跳过|跳過",
         "roi": [
             700,
             640,
@@ -579,7 +579,7 @@
     "FLLogResult": {
         "description": "【日志节点】结算总结页：OCR 读「累计活动pt / 挑战pt」等文字，配合上方 ×3 倍率一起被框架记进 debug/maafw.log（本节点只读不点）。",
         "recognition": "OCR",
-        "expected": "累计活动pt|挑战pt",
+        "expected": "累计活动pt|挑战pt|累計活動pt|挑戰pt",
         "roi": [
             600,
             150,
@@ -642,7 +642,7 @@
     "FLTicketCheck": {
         "description": "【终止条件之二】OCR 读编队页的「还剩N次」（跳过券）。匹配 还剩1~9次 → 还有券，继续；不匹配（券用完/读不到）→ 走 on_error 收尾。",
         "recognition": "OCR",
-        "expected": "还剩[1-9].",
+        "expected": "还剩[1-9].|還剩[1-9].",
         "roi": [
             700,
             590,
@@ -729,7 +729,7 @@
     "FLConfirmSongOCR": {
         "description": "「确定」的 OCR 兜底：容忍 OCR 读残（确寇/确认…），用 确.. 宽松匹配 + 限定 roi。模板命中时不会走到这里。",
         "recognition": "OCR",
-        "expected": "确..",
+        "expected": "确..|確..",
         "roi": [
             1060,
             615,
@@ -746,7 +746,7 @@
     "FLTicketGone": {
         "description": "【终止条件之二·正路】编队页左上角读到「还剩0次」→ 转入收尾。",
         "recognition": "OCR",
-        "expected": "还剩0",
+        "expected": "还剩0|還剩0",
         "roi": [
             700,
             590,
@@ -772,7 +772,7 @@
     "FLSkipAllGate": {
         "description": "【全消耗门禁·跳过路】点「跳过」打开面板后，先 OCR 看「全部消耗」那行还有没有次数（「今日剩余N次」/「全部消耗剩余N次」，N>0）。有 → 去勾复选框；没有（「今日次数已用完。0」，每日仅 1 次，23:00 重置）→ 不勾，直接点面板里的「跳过」。避免去点一个已失效的复选框。",
         "recognition": "OCR",
-        "expected": "全部消耗剩余[1-9]|今日剩余[1-9]",
+        "expected": "全部消耗剩余[1-9]|今日剩余[1-9]|全部消耗剩餘[1-9]|今日剩餘[1-9]",
         "roi": [560, 370, 300, 90],
         "action": "DoNothing",
         "next": ["FLSkipTierPick"],
@@ -782,7 +782,7 @@
     "FLBAllGate": {
         "description": "【全消耗门禁·消耗LB路】由「消耗LB」打开同一个面板时同样先确认还有没有全消耗次数。有 → 勾复选框；没有 → 直接点 OK（保持当前档位）。",
         "recognition": "OCR",
-        "expected": "全部消耗剩余[1-9]|今日剩余[1-9]",
+        "expected": "全部消耗剩余[1-9]|今日剩余[1-9]|全部消耗剩餘[1-9]|今日剩餘[1-9]",
         "roi": [560, 370, 300, 90],
         "action": "DoNothing",
         "next": ["FLBSelectAll"],
@@ -807,7 +807,7 @@
     "FLBondReward": {
         "description": "【意外弹窗】跳过演出后可能弹出「羁绊奖励详情」（角色羁绊升级，发技能强化券等，一个角色一个）。【2026-10-03 实测补】跑完整跳过链时正是被它卡住 → 链里 next 全不匹配 → 任务 status=4000。标题在屏幕顶部中央，关闭按钮在底部中央（720p 641,660）。故意用明确 target 而不是命中的标题框中心（标题在上方，点它没用）。",
         "recognition": "OCR",
-        "expected": "羁绊奖励详情",
+        "expected": "羁绊奖励详情|羈絆獎勵詳情",
         "roi": [
             420,
             10,

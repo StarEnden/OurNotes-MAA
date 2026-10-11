@@ -7,6 +7,7 @@
             "LogDataDownloadSize",
             "LaunchClientApp",
             "LaunchDataDownload",
+            "LaunchDataDownloadOCR",
             "LaunchTapToStart",
             "LaunchTouch",
             "LaunchSkipLoginBonus",
@@ -43,7 +44,7 @@
     "LaunchSkipLoginBonus": {
         "description": "登录奖励等全屏弹窗：点击右上角 SKIP。【2026-10-03 改 OCR】原来用模板 skip_btn.png，实测节点命中、也点了，但画面没变化（登录奖励界面还停在原地）；改成 OCR 认「SKIP/跳过」文字后，点同一位置即可正常跳过 → 领取结果 → 剧情 TOUCH → 回主界面。",
         "recognition": "OCR",
-        "expected": "SKIP|skip|Skip|跳过|スキップ",
+        "expected": "SKIP|skip|Skip|跳过|スキップ|跳過",
         "roi": [
             1115,
             5,
@@ -115,9 +116,31 @@
         ],
         "action": "DoNothing",
         "next": [
-            "LaunchDataDownload"
+            "LaunchDataDownload",
+            "LaunchDataDownloadOCR"
         ],
         "timeout": 5000
+    },
+    "LaunchDataDownloadOCR": {
+        "description": "【数据下载弹窗·繁体兜底】模板 data_download.png 是从简体标题「数据下载」裁的，繁中标题是「下載資料」→ 模板认不到，整链断在这里（2026-10-11 实测：切繁中后游戏要求下载 119.69MB 追加资料，LaunchDataDownload 失配 → 任务 4000，后续任务全被门禁跳过）。本节点改用 OCR 认标题（「数据」/「資料」都认），点击位置沿用实测 OK 坐标。",
+        "recognition": "OCR",
+        "expected": "数据|資料",
+        "roi": [
+            540,
+            5,
+            240,
+            80
+        ],
+        "action": "Click",
+        "target": [
+            783,
+            655
+        ],
+        "next": [
+            "LaunchGame"
+        ],
+        "timeout": 10000,
+        "post_delay": 3000
     },
     "LaunchDataDownload": {
         "description": "客户端「数据下载」弹窗（大版本更新后需下载追加数据，1.0.2 实测 52.07MB）：识别标题「数据下载」→ 点击 OK 开始下载，之后回入口循环等下载完成。",
@@ -176,7 +199,7 @@
     "LaunchStorySkip": {
         "description": "【剧情页·菜单 SKIP】切号/首次进入会插入账号剧情。要先点右上角 ☰ 展开菜单（由 LaunchStoryReveal 负责），菜单第一项就是 SKIP，实测两次都在 (1802,269)@1080p=(1201,179)@720p。⚠️ 不用模板/颜色：SKIP 的底背景会变。",
         "recognition": "OCR",
-        "expected": "SKIP|Skip|skip|跳过",
+        "expected": "SKIP|Skip|skip|跳过|跳過",
         "roi": [
             1120,
             5,
@@ -193,7 +216,7 @@
     "LaunchStorySkipConfirm": {
         "description": "【剧情跳过·确认框】「要跳过故事吗？」→ 点右侧「跳过」（@1080p 约 (1134,800)）。注意菜单里那项是英文 SKIP，中文「跳过」只出现在这个确认框，不会误伤。",
         "recognition": "OCR",
-        "expected": "跳过",
+        "expected": "跳过|跳過",
         "roi": [
             620,
             470,
@@ -210,7 +233,7 @@
     "LaunchRewardOK": {
         "description": "【获得奖励弹窗】登录奖励/剧情推进后弹出的「获得奖励 … 已获得 xxx」→ 点下方 OK 关掉。【2026-10-03 补】日期变更后实测流程会经过它（OK 在 1080p (961,988)），缺这个节点会一直卡住直到超时。",
         "recognition": "OCR",
-        "expected": "OK|Ok|0K|确定",
+        "expected": "OK|Ok|0K|确定|確定",
         "roi": [
             540,
             610,
@@ -227,7 +250,7 @@
     "LaunchNoticeClose": {
         "description": "【2026-10-02 补】公告页左下「关闭」→ 回启动流程。（实测冷启动会依次遇到 登录奖励剧情 → 公告页）",
         "recognition": "OCR",
-        "expected": "关闭",
+        "expected": "关闭|關閉|關開",
         "roi": [
             560,
             600,

@@ -92,7 +92,7 @@
     "TWGIntroClose": {
         "description": "T.G.W CARD 介绍最后一页的关闭按钮。",
         "recognition": "OCR",
-        "expected": "关闭",
+        "expected": "关闭|關閉|關開",
         "roi": [
             345,
             620,
@@ -295,7 +295,7 @@
     "PLogPointReward": {
         "description": "【日志节点】用 OCR 读「获得奖励」弹窗（已获得 T.G.W CARD pt）的文字，读到的内容会被框架记进 debug/maafw.log，实现「领了什么奖励」可追溯。只识别不点击。⚠️ 弹窗 roi 待实机核对。",
         "recognition": "OCR",
-        "expected": "T\\.G\\.W|pt|PT|积分|获得|奖励",
+        "expected": "T\\.G\\.W|pt|PT|积分|获得|奖励|積分|獲得|獎勵",
         "roi": [
             400,
             300,
@@ -435,7 +435,7 @@
     "DLogDailyReward": {
         "description": "【日志节点】用 OCR 读「领取奖励」弹窗（已领取以下道具…）的文字，内容自动进 debug/maafw.log，实现「领了什么奖励」可追溯。只识别不点击。⚠️ 弹窗 roi 待实机核对。",
         "recognition": "OCR",
-        "expected": "LIVE BOOST|饮料|道具|领取|获得|×|x[0-9]",
+        "expected": "LIVE BOOST|饮料|道具|领取|获得|×|x[0-9]|飲料|領取|獲得",
         "roi": [
             400,
             300,
@@ -534,7 +534,7 @@
     "SClickCatalog": {
         "description": "商店左栏：点击「T.G.W CARD 专享商品目录」（OCR 识别文字，点击文字中心即按钮本体）。【2026-10-03 晚】进去后先试领取：免费项实测已移到列表最上面第一张卡，不再需要先滑到底。",
         "recognition": "OCR",
-        "expected": "专享商品目录",
+        "expected": "专享商品目录|專享商品目錄",
         "roi": [
             0,
             240,
@@ -642,7 +642,7 @@
     "SLogLiveBonus": {
         "description": "【日志节点】用 OCR 读领取弹窗文字（领到的东西会进 debug/maafw.log）。只识别不点击。⚠️ roi 待实机核对。",
         "recognition": "OCR",
-        "expected": "LIVE BOOST|饮料|道具|获得|领取|×",
+        "expected": "LIVE BOOST|饮料|道具|获得|领取|×|飲料|獲得|領取",
         "roi": [
             400,
             300,

@@ -64,7 +64,7 @@
     "StudioOnPage": {
         "description": "录音室练习页识别（OCR 标题「录音室」）→ 转去一键领取。",
         "recognition": "OCR",
-        "expected": "录音室",
+        "expected": "录音室|錄音室",
         "roi": [
             180,
             15,
@@ -80,7 +80,7 @@
     "StudioClaim": {
         "description": "录音室页右下「一键领取」。⚠️ 同 PASS 的坑：框架把「一键领取」读成「键领取」（丢「一」）→ expected 必须带上真实读数；按钮位置用实测值 1080p(1672,988)→720p(1115,659) 做显式 target，别用肉眼估值。领不到 → 直接走主页收尾。  【2026-10-03】加 replace 纠错表（同上：框架会把「一键领取」读成「键领取」）。",
         "recognition": "OCR",
-        "expected": "一键领取|键领取",
+        "expected": "一键领取|键领取|一鍵領取|鍵領取|一併領取|併領取|一供领取|领取|領取",
         "roi": [
             960,
             615,
@@ -160,7 +160,7 @@
     "StudioRewardTitle": {
         "description": "【奖励弹窗连点翻页】领奖后是**一串**\"点一下翻一页\"的弹窗：录音室练习奖励 → LEVEL UP(练习LV) → 再一个录音室练习奖励 …。这些页的确认按钮 OCR 读不出（读成 @}）；实测**点 1080p(960,860)→720p(640,573)** 必定关闭（试第一个点就成功）。注意：不要用 expected=OK 的节点去接（实测 OK|0K|Ok 会误命中 LEVEL UP 并点到面板中央，空转）。max_hit=10 防死循环。",
         "recognition": "OCR",
-        "expected": "录音室练习奖励|获得奖励|LEVEL ?UP|练习LV",
+        "expected": "录音室练习奖励|获得奖励|LEVEL ?UP|练习LV|錄音室練習獎勵|獲得獎勵|練習LV",
         "roi": [
             40,
             5,

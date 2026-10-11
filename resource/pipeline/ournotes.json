@@ -291,7 +291,7 @@
     "ClickStampCloseOCR": {
         "description": "演出打卡「关闭」的 OCR 兜底（stamp_close.png 若漂移时生效）。",
         "recognition": "OCR",
-        "expected": "关闭",
+        "expected": "关闭|關閉|關開",
         "roi": [
             560,
             610,
@@ -308,7 +308,7 @@
     "ClickStartOCR": {
         "description": "选曲页「确定」的 OCR 兜底（start_confirm.png 若漂移时生效；OCR 可能把它读残，故用 确.. 宽松匹配）。",
         "recognition": "OCR",
-        "expected": "确..",
+        "expected": "确..|確..",
         "roi": [
             1060,
             615,
@@ -343,7 +343,7 @@
     "LogResult": {
         "description": "【日志节点】结算总结页读「累计活动pt/挑战pt」等文字（只读不点），配合 ×N 倍率一起进 maafw.log。",
         "recognition": "OCR",
-        "expected": "累计活动pt|挑战pt",
+        "expected": "累计活动pt|挑战pt|累計活動pt|挑戰pt",
         "roi": [
             600,
             150,
@@ -359,7 +359,7 @@
     "ClickPopupClose": {
         "description": "通用新功能解锁弹窗（「XX功能解锁」）→ 点关闭。OCR 认标题再点固定坐标，不盲点。",
         "recognition": "OCR",
-        "expected": ".*功能解锁.*",
+        "expected": ".*功能解锁.*|.*功能解鎖.*",
         "roi": [
             480,
             110,
@@ -574,7 +574,7 @@
     "GrindHelpModeDismiss": {
         "description": "【加载页·辅助模式弹窗】开演前的 NOW LOADING 加载页上会弹它，无按钮、需点一下。⚠️ 曾把 next 指向 ClickTeamFlow 而与该节点形成乒乓环 → 触发框架循环保护整轮中断（2026-10-03 实锤）。现在 next 只走 WaitResult，且 max_hit=3 自限；看门狗每轮重置任务，不存在跨轮累计。",
         "recognition": "OCR",
-        "expected": ".*辅助模式.*|.*COMBO连击.*|.*更容易连.*",
+        "expected": ".*辅助模式.*|.*COMBO连击.*|.*更容易连.*|.*輔助模式.*|.*COMBO連擊.*|.*更容易連.*",
         "roi": [
             280,
             290,

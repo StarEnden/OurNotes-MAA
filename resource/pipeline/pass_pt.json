@@ -9,8 +9,8 @@
             "PassPopupOK",
             "PassIntro",
             "PassClickCard",
-            "PassOnPass",
             "PassOnTasks",
+            "PassOnPass",
             "PassDone"
         ],
         "timeout": 30000,
@@ -38,7 +38,7 @@
     "PassClickSeasonBanner": {
         "description": "PASS 页面左侧开服纪念·赛季任务·通行证横幅：进入对应赛季任务页面，再检查通行证任务红点。",
         "recognition": "OCR",
-        "expected": "开服纪念|赛季任务|通行证",
+        "expected": "开服纪念|赛季任务|通行证|開服紀念|賽季任務|通行證",
         "roi": [
             0,
             180,
@@ -79,7 +79,7 @@
     "PassIntro": {
         "description": "【1.0.3 新增】「任务通行证」首次教程弹窗：点「开服纪念/赛季任务/通行证」横幅后首次进入时弹出。特征=标题「任务通行证」+正文「完成任务，提升通行证等级吧！」「PASS LEVEL UP」「积攒通行证pt」，底部「关闭」「下一步」+分页圆点；⚠️ 它**左上没有主页图标、右侧没有「通行证任务」标签**，所以 PassOnPass / PassClickTaskBtn 两个候选都认不出 → 原链 8s 超时后整任务 4000（2026-10-11 实测）。此节点只识别，翻页/关闭交给 PassIntroNext / PassIntroClose。",
         "recognition": "OCR",
-        "expected": "提升通行证等级|PASS LEVEL UP|积攒通行证pt",
+        "expected": "提升通行证等级|PASS LEVEL UP|积攒通行证pt|提升通行證等級|積攢通行證pt",
         "roi": [
             300,
             60,
@@ -119,7 +119,7 @@
     "PassIntroClose": {
         "description": "教程弹窗的「关闭」按钮（左下部，同上版式）。关掉后应落到正常的「任务通行证」页 → 交给 PassOnPass / PassClickTaskBtn。",
         "recognition": "OCR",
-        "expected": "关闭",
+        "expected": "关闭|關閉|關開",
         "roi": [
             345,
             620,
@@ -140,7 +140,7 @@
     "PassOnPass": {
         "description": "任务通行证页识别（OCR 标题「任务通行证」）→ 不点击，转去领取。",
         "recognition": "OCR",
-        "expected": "任务通行证",
+        "expected": "任务通行证|任務通行證|通行證任務",
         "roi": [
             150,
             10,
@@ -178,7 +178,7 @@
     "PassClaimTop": {
         "description": "任务通行证页底部「一键领取」（等级奖励）。⚠️ 2026-10-02 三个坑一起踩：①框架把它读成**「键领取」**（丢「一」）→ expected 必须带上这个真实读数；②roi 若放宽到整片区域，会误匹配卡片上的「领取」文字 → 点击落空，什么都没领到；③按钮真实位置 1080p(1718,989)，肉眼估计偏了 100+px → 必须显式 target。  【2026-10-03】加 replace 纠错表：框架实测会把「一键领取」读成「键领取」（丢字），用替换表纠正，比在 expected 里堆备选写法更干净。",
         "recognition": "OCR",
-        "expected": "一键领取|键领取",
+        "expected": "一键领取|键领取|一鍵領取|鍵領取|一併領取|併領取|一供领取|领取|領取",
         "roi": [
             1030,
             600,
@@ -230,7 +230,7 @@
     "PassClickTaskBtn": {
         "description": "【导航】点右上角「通行证任务」标签进入通行证任务页。【2026-10-03 修复】原 next 只有 [PassOnTasks]，实测在该页上再点一次此标签后那一屏没有「达成情况」→ next 全失败 → 整个任务 status=4000（这就是通行证任务失败的真因）。现在末尾补上该页专属的「关闭」(PassDailyClose)：是任务页就关掉往下走，不在任务页则自然不命中、不会误退。",
         "recognition": "OCR",
-        "expected": "通行证任务",
+        "expected": "通行证任务|通行證任務",
         "roi": [
             1040,
             0,
@@ -266,7 +266,7 @@
     "PassOnTasks": {
         "description": "【通行证任务页】OCR 认「达成情况」→ 去领。next 三条正路：①有可领 → PassClaimDaily；②本页领不到 → 切「常规」页 PassTabNormal；③都领完 → PassDailyClose 收尾。",
         "recognition": "OCR",
-        "expected": "达成情况",
+        "expected": "达成情况|達成情況|達成状况|達成狀況",
         "roi": [
             980,
             90,
@@ -284,7 +284,7 @@
     "PassClaimDaily": {
         "description": "通行证任务的「领取」/「一键领取」。⚠️ 2026-10-02 实测：①该页有「每日」「常规」两个标签，可领项可能只出现在**常规**页 → 扫不到要切页再扫；②roi 必须同时覆盖右侧行内「领取」和底部「一键领取」；③框架会把按钮读成「键领取」；④点击交给 OCR 框中心即可（两种按钮都在框上）。",
         "recognition": "OCR",
-        "expected": "领取|一键领取|键领取",
+        "expected": "领取|一键领取|键领取|領取|一鍵領取|鍵領取|一併領取|併領取|一供领取",
         "roi": [
             745,
             165,
@@ -324,7 +324,7 @@
     "PassDailyClose": {
         "description": "通行证任务页左下「关闭」→ 退回通行证页，然后**推进到下一条轨道**（PassSlot2 / PassSlot3 各 max_hit=1，点过就不再命中，于是自然走到 PassClickHome 收尾——不必依赖变量或循环计数）。",
         "recognition": "OCR",
-        "expected": "关闭",
+        "expected": "关闭|關閉|關開",
         "roi": [
             380,
             600,
