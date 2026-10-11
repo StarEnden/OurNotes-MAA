@@ -7,6 +7,7 @@
             "LaunchStorySkip",
             "LaunchDateChange",
             "PassPopupOK",
+            "PassIntro",
             "PassClickCard",
             "PassOnPass",
             "PassOnTasks",
@@ -46,11 +47,95 @@
         ],
         "action": "Click",
         "next": [
+            "PassPtOK",
+            "PassIntro",
             "PassOnPass",
             "PassClickTaskBtn"
         ],
         "timeout": 8000,
         "post_delay": 2500
+    },
+    "PassPtOK": {
+        "description": "【「获得通行证pt」结算弹窗】点「开服纪念/赛季任务/通行证」横幅后可能弹出的通行证pt结算层（正文「获得通行证pt / +N / 还需 M」，底部居中「OK」）。2026-10-11 实测：原链在该路径上没有 OK 处理器 → 8s 超时后整任务 4000。⚠️ roi 只框弹窗底部按钮区（y 480-600），不要放大到整屏，否则会误点任务页的「关闭」「下一步」。",
+        "recognition": "OCR",
+        "expected": "OK",
+        "roi": [
+            450,
+            480,
+            400,
+            120
+        ],
+        "action": "Click",
+        "max_hit": 6,
+        "next": [
+            "PassPtOK",
+            "PassIntro",
+            "PassOnPass",
+            "PassClickTaskBtn"
+        ],
+        "timeout": 5000,
+        "post_delay": 1500
+    },
+    "PassIntro": {
+        "description": "【1.0.3 新增】「任务通行证」首次教程弹窗：点「开服纪念/赛季任务/通行证」横幅后首次进入时弹出。特征=标题「任务通行证」+正文「完成任务，提升通行证等级吧！」「PASS LEVEL UP」「积攒通行证pt」，底部「关闭」「下一步」+分页圆点；⚠️ 它**左上没有主页图标、右侧没有「通行证任务」标签**，所以 PassOnPass / PassClickTaskBtn 两个候选都认不出 → 原链 8s 超时后整任务 4000（2026-10-11 实测）。此节点只识别，翻页/关闭交给 PassIntroNext / PassIntroClose。",
+        "recognition": "OCR",
+        "expected": "提升通行证等级|PASS LEVEL UP|积攒通行证pt",
+        "roi": [
+            300,
+            60,
+            680,
+            520
+        ],
+        "action": "DoNothing",
+        "next": [
+            "PassIntroNext",
+            "PassIntroClose",
+            "PassOnPass",
+            "PassClickTaskBtn"
+        ],
+        "timeout": 6000
+    },
+    "PassIntroNext": {
+        "description": "教程弹窗的「下一步」按钮（版式与 T.G.W CARD 首次介绍一致，故沿用它的实测 roi）。最多翻 3 页。",
+        "recognition": "OCR",
+        "expected": "下一步",
+        "roi": [
+            690,
+            620,
+            250,
+            65
+        ],
+        "action": "Click",
+        "max_hit": 3,
+        "next": [
+            "PassIntro",
+            "PassIntroClose",
+            "PassOnPass",
+            "PassClickTaskBtn"
+        ],
+        "timeout": 5000,
+        "post_delay": 900
+    },
+    "PassIntroClose": {
+        "description": "教程弹窗的「关闭」按钮（左下部，同上版式）。关掉后应落到正常的「任务通行证」页 → 交给 PassOnPass / PassClickTaskBtn。",
+        "recognition": "OCR",
+        "expected": "关闭",
+        "roi": [
+            345,
+            620,
+            220,
+            65
+        ],
+        "action": "Click",
+        "max_hit": 2,
+        "next": [
+            "PassIntro",
+            "PassOnPass",
+            "PassClickTaskBtn",
+            "PassClaimTopLitGate"
+        ],
+        "timeout": 5000,
+        "post_delay": 2000
     },
     "PassOnPass": {
         "description": "任务通行证页识别（OCR 标题「任务通行证」）→ 不点击，转去领取。",
@@ -64,7 +149,8 @@
         ],
         "action": "DoNothing",
         "on_error": [
-            "PassClickTaskBtn"
+            "PassClickTaskBtn",
+            "PassIntro"
         ],
         "next": [
             "PassClaimTopLitGate"
@@ -153,6 +239,7 @@
         ],
         "action": "Click",
         "next": [
+            "PassPtOK",
             "PassOnTasks",
             "PassDailyClose"
         ],

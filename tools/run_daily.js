@@ -10,6 +10,7 @@ const maa = require(path.join(MAA_BIN, 'MaaNode.node'));
 // 识别结果（含 OCR 文本/匹配分数）写进项目 debug/，与 GUI 一致
 maa.Global.log_dir = path.join(PROJECT, 'debug');
 maa.Global.debug_mode = true;
+maa.Global.save_draw = true;   // 保存每个节点识别时的整屏现场图到 debug/vision/ —— 排错时最有用（2026-10-11 补：缺它时 run_daily 跑完没有任何现场图，只能靠日志文本猜）
 
 const DEFAULT_TASKS = ['LaunchGame', 'TWGPoints', 'TWGDaily', 'TWGLiveBonus'];
 const tasks = process.argv.slice(2).length ? process.argv.slice(2) : DEFAULT_TASKS;

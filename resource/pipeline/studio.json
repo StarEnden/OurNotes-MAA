@@ -31,7 +31,7 @@
         "timeout": 8000
     },
     "StudioClickIcon": {
-        "description": "主界面右侧录音室图标（谱架形状，HUD 图标无文字、位置固定）→ 固定 target (1229,513)@720p（=1080p(1843,770)）。",
+        "description": "主界面右侧录音室图标（谱架形状，HUD 图标无文字、位置固定）→ 固定 target (1229,513)@720p（=1080p(1843,770)）。⚠️ 该账号录音室可能**未解锁**（图标右上带青色锁角标），此时点击无反应。故挂 on_error → StudioLockedSkip：点了没进页面就优雅收尾，而不是让整任务 4000（2026-10-11 实测：未解锁时原链 27.1s 后失败）。timeout 从默认 20s 收到 12s，失败兜底更快。",
         "recognition": "DirectHit",
         "action": "Click",
         "target": [
@@ -41,7 +41,25 @@
         "next": [
             "StudioOnPage"
         ],
-        "post_delay": 4000
+        "on_error": [
+            "StudioLockedSkip"
+        ],
+        "post_delay": 4000,
+        "timeout": 12000
+    },
+    "StudioLockedSkip": {
+        "description": "【未解锁/未进页面的兜底】点了录音室图标但没进到录音室页（实测原因：该账号录音室未解锁，图标右上带青色锁角标，点击无反应）→ 确认仍在主界面就把任务判为「无事可做」收尾，不再报 4000。命中序列里能看到本节点名，便于分辨真失败与本来是未解锁。",
+        "recognition": "OCR",
+        "expected": "演出",
+        "roi": [
+            1020,
+            620,
+            200,
+            75
+        ],
+        "action": "DoNothing",
+        "next": [],
+        "timeout": 6000
     },
     "StudioOnPage": {
         "description": "录音室练习页识别（OCR 标题「录音室」）→ 转去一键领取。",
