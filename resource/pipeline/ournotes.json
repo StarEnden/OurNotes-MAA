@@ -25,17 +25,17 @@
     "ClickTapToStart": {
         "description": "启动页点击 TAP TO START 进入游戏。OCR 限定按钮文字区域，背景动画不影响。",
         "recognition": "OCR",
-        "expected": "TAP TO START",
+        "expected": "TAP|START",
         "action": "Click",
         "next": [
             "ClickLiveEntry"
         ],
         "timeout": 30000,
         "roi": [
-            780,
-            540,
-            400,
-            120
+            795,
+            550,
+            355,
+            60
         ],
         "post_delay": 2000
     },
@@ -191,7 +191,8 @@
             "LogResult",
             "ClickAgain",
             "ClickStart",
-            "ClickStartOCR"
+            "ClickStartOCR",
+            "ClickTapToStart"
         ],
         "timeout": 360000
     },
@@ -208,6 +209,7 @@
             "ClickAgain",
             "ClickStart",
             "ClickStartOCR",
+            "ClickTapToStart",
             "WaitResult"
         ],
         "timeout": 60000,
@@ -250,7 +252,7 @@
     "ClickNext": {
         "description": "结算页推进按钮（2026-10-02 改 OCR：文字有「下一步」和居中「OK」两种；且 next_btn.png 与编队页 LIVESTART 同位置会误配开歌）。",
         "recognition": "OCR",
-        "expected": "下一.|OK",
+        "expected": "^(下一.*|[Oo0]K[.。!！]?)$",
         "roi": [
             600,
             600,

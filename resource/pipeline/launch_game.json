@@ -25,12 +25,12 @@
     "LaunchTapToStart": {
         "description": "标题页 TAP TO START → 进游戏。timeout 放宽到 60s，用于冷启动后等待加载。",
         "recognition": "OCR",
-        "expected": "TAP TO START",
+        "expected": "TAP|START",
         "roi": [
-            780,
-            540,
-            400,
-            120
+            795,
+            550,
+            355,
+            60
         ],
         "action": "Click",
         "next": [
