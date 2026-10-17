@@ -1,8 +1,8 @@
 {
   "files": {
-    "interface.json": 1791041659447,
+    "interface.json": 1792250648004,
     "logo.ico": 1791041365247,
-    "resource/announcement/使用须知.md": 1791041573123,
+    "resource/announcement/使用须知.md": 1792248524538,
     "resource/image/claim_daily_btn.png": 1791036711562,
     "resource/image/claim_points_btn.png": 1791036711563,
     "resource/image/daily_tag.png": 1791036711563,
@@ -29,6 +29,7 @@
     "resource/image/song_our_survival_art.png": 1791036711576,
     "resource/image/stamp_close.png": 1791036711577,
     "resource/image/start_confirm.png": 1791036711577,
+    "resource/image/story_menu.png": 1791049008461,
     "resource/image/team_ok.png": 1791036711579,
     "resource/image/tgw_panel.png": 1791036711579,
     "resource/image/tutorial_close.png": 1791036711582,
@@ -38,17 +39,18 @@
     "resource/model/ocr/det.onnx": 1791036711623,
     "resource/model/ocr/keys.txt": 1791036711624,
     "resource/model/ocr/rec.onnx": 1791036711719,
-    "resource/pipeline/common.json": 1791036711722,
-    "resource/pipeline/daily_twg.json": 1791039425694,
-    "resource/pipeline/free_live.json": 1791036711723,
-    "resource/pipeline/gift_box.json": 1791036711724,
-    "resource/pipeline/launch_game.json": 1791036711724,
-    "resource/pipeline/missions.json": 1791036711726,
-    "resource/pipeline/ournotes.json": 1791040119750,
-    "resource/pipeline/pass_pt.json": 1791036711727,
-    "resource/pipeline/studio.json": 1791036711728
+    "resource/pipeline/common.json": 1791086998882,
+    "resource/pipeline/daily_twg.json": 1791708311587,
+    "resource/pipeline/free_live.json": 1791707958019,
+    "resource/pipeline/gift_box.json": 1791708558211,
+    "resource/pipeline/launch_game.json": 1792246631734,
+    "resource/pipeline/missions.json": 1791708558212,
+    "resource/pipeline/ournotes.json": 1791708311590,
+    "resource/pipeline/pass_pt.json": 1792246285146,
+    "resource/pipeline/recruit.json": 1792248385423,
+    "resource/pipeline/studio.json": 1791708558214
   },
-  "generated_at": 1791041659749,
+  "generated_at": 1792251087918,
   "generator": "ournotes-maa tools/resource_check.py",
-  "version": "0.1.7"
+  "version": "0.1.9"
 }
