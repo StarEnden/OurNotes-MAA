@@ -28,8 +28,8 @@
     "resource": [
         {
             "name": "Official",
-            "label": "国际简中服",
-            "description": "OUR NOTES 国际简中服资源包",
+            "label": "国际服简中资源",
+            "description": "OUR NOTES 国际服简中资源包",
             "path": [
                 "resource"
             ]
