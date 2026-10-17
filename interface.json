@@ -28,8 +28,8 @@
     "resource": [
         {
             "name": "Official",
-            "label": "国际服",
-            "description": "OUR NOTES 国际服资源包",
+            "label": "国际简中服",
+            "description": "OUR NOTES 国际简中服资源包",
             "path": [
                 "resource"
             ]
@@ -194,6 +194,12 @@
             "entry": "TWGLiveBonus",
             "default_check": true,
             "description": "主界面 → 商店 → 左栏「T.G.W CARD 专享商品目录」→ 滚到列表底部 → 领取「每日 Live Boost」（小型LIVE BOOST饮料×1，免费）→ 确认 → 返回主界面。已领过（SOLD OUT）时只记录不点击；每日 23:00 重置。"
+        },
+        {
+            "name": "每日免费招募（注意这是真正的抽卡）",
+            "entry": "RecruitStart",
+            "default_check": false,
+            "description": "⚠️ 这是**真正的抽卡**：会消耗当天这 1 次免费招募机会（不消耗星钻）。因此默认不勾选，需要手动勾选才会执行。\n\n流程：主界面「免费招募」→ 卡池页「免费」→ 零消耗校验（确认框必须写着「消耗 0 个星钻」）→ OK → SKIP → 「招募TOP」→ 回主界面。\n\n安全：确认框不是「消耗 0 个星钻」就点「取消」退出，绝不花星钻，也绝不点「再次招募」。每日 23:00 重置；免费次数用掉后「免费招募」四个字消失，任务自动跳过（幂等）。"
         },
         {
             "name": "使用跳过进行演出",

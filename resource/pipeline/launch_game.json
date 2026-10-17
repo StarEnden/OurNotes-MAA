@@ -12,6 +12,7 @@
             "LaunchTouch",
             "LaunchSkipLoginBonus",
             "LaunchNoticeClose",
+            "LaunchSongSplash",
             "LaunchDateChange",
             "LaunchStoryReveal",
             "LaunchStorySkip",
@@ -56,6 +57,28 @@
             "LaunchGame"
         ],
         "timeout": 8000,
+        "post_delay": 1500
+    },
+    "LaunchSongSplash": {
+        "description": "【新版告知页·新曲追加】Ver.1.0.6 起登录后会弹「追加原创乐曲！」全屏告知页：无按钮、无关闭，**点任意处继续**。链路原来没有节点处理它 → 启动链会一直耗到 LaunchBootWait 拍数用尽（2026-10-17 实测：301s 后 4000，游戏就晾在这个页面上）。识别标题后点屏幕中央推进；max_hit=6 允许连弹多首。roi 只取顶部标题带，避免在公告列表里误命中同名字样的条目。",
+        "recognition": "OCR",
+        "expected": "追加.*乐曲|追加.*樂曲|追加.*楽曲|追加原创|追加原創",
+        "roi": [
+            250,
+            0,
+            780,
+            110
+        ],
+        "action": "Click",
+        "target": [
+            640,
+            360
+        ],
+        "max_hit": 6,
+        "next": [
+            "LaunchGame"
+        ],
+        "timeout": 6000,
         "post_delay": 1500
     },
     "LaunchDateChange": {
@@ -185,10 +208,10 @@
         "post_delay": 2500
     },
     "LaunchStoryReveal": {
-        "description": "【剧情·叫出 UI】剧情（对话）界面的按钮会自动淡出隐藏，且 SKIP 藏在右上角 ☰ 菜单里。本节点用模板认 ☰（story_menu.png，只裁圆按钮、不含会变的剧情背景），命中才点 → 展开菜单 → 交给 LaunchStorySkip 认 SKIP/跳过。因为有模板门禁，可以安全挂在循环点（早先纯 DirectHit 版本在识别失效时盲点过 40+ 次 ✗）。",
+        "description": "【剧情·叫出 UI】剧情（对话）界面的按钮会自动淡出隐藏，且 SKIP 藏在右上角 ☰ 菜单里。本节点用模板认 ☰（story_menu.png，只裁圆按钮、不含会变的剧情背景），命中才点 → 展开菜单 → 交给 LaunchStorySkip 认 SKIP/跳过。因为有模板门禁，可以安全挂在循环点（早先纯 DirectHit 版本在识别失效时盲点过 40+ 次 ✗）。⚠️ 2026-10-17：阈值 0.5 太低 —— 标题页右上角的 ☰（三横线菜单）和数据下载页的「公告」按钮附近都会误命中，导致点开无关菜单、启动链 4000。技能记录里这块紧裁模板在剧情页实测 0.9981，故抬到 0.8。",
         "recognition": "TemplateMatch",
         "template": "story_menu.png",
-        "threshold": 0.5,
+        "threshold": 0.8,
         "action": "Click",
         "max_hit": 4,
         "next": [
@@ -288,6 +311,7 @@
             "LaunchTouch",
             "LaunchSkipLoginBonus",
             "LaunchNoticeClose",
+            "LaunchSongSplash",
             "LaunchDateChange",
             "LaunchStoryReveal",
             "LaunchStorySkip",

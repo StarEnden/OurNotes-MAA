@@ -1,0 +1,177 @@
+{
+    "RecruitStart": {
+        "description": "【每日免费招募】入口。流程：主界面底部「招募」上方出现「免费招募」四个字（= 今日免费抽还在）→ 点它进卡池页 → 点「免费」按钮 → 确认框「确认招募／消耗 0 个星钻」点 OK → 抽卡演出页点 SKIP → 「招募结算」页点「招募TOP」→ 左上主页图标回主界面。2026-10-17 实测整条链一次走通。",
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "next": [
+            "LaunchStorySkip",
+            "LaunchDateChange",
+            "RecruitFreeGate",
+            "RecruitDone"
+        ],
+        "timeout": 30000,
+        "pre_delay": 500
+    },
+    "RecruitFreeGate": {
+        "description": "【门禁】主界面「免费招募」标签（实测 box=[538,569,75,22]@720p）。**这个标签只在今日免费抽未用掉时出现**：用掉后同一位置直接消失（实测 0 命中）→ 所以它既是入口也是幂等判据，重复跑不会白点。",
+        "recognition": "OCR",
+        "expected": "免费招募",
+        "roi": [
+            470,
+            545,
+            220,
+            70
+        ],
+        "action": "Click",
+        "next": [
+            "RecruitFreeBtn",
+            "RecruitClickHome"
+        ],
+        "on_error": [
+            "RecruitDone"
+        ],
+        "timeout": 6000,
+        "post_delay": 3000
+    },
+    "RecruitFreeBtn": {
+        "description": "【卡池页·免费按钮】右下那组「每日23:00重置！/ 免费 / 1次」（实测「免费」box=[878,549,82,26]@720p）。用掉后同位置文字变成「招募1次」→ 不会再命中，天然幂等。⚠️ 点完**绝不直接点 OK**：必须先进 RecruitZeroGate 校验确认框写着「消耗 0 个星钻」，否则同级落到 RecruitCancel 点「取消」。",
+        "recognition": "OCR",
+        "expected": "免费",
+        "roi": [
+            850,
+            530,
+            180,
+            90
+        ],
+        "action": "Click",
+        "next": [
+            "RecruitZeroGate",
+            "RecruitCancel"
+        ],
+        "on_error": [
+            "RecruitClickHome"
+        ],
+        "timeout": 8000,
+        "post_delay": 2500
+    },
+    "RecruitZeroGate": {
+        "description": "【强制零消耗闸门·防误真抽】确认框正文必须出现「消耗 0 个星钻」（兼容繁体「0個星鑽」、以及 OCR 把数字/量词读散的写法）。**只有命中才允许点 OK**；不命中就由同级 RecruitCancel 点「取消」退出。这是防止把免费抽误点成付费真抽的最后一道闸 —— 宁可少领一次，绝不多花一颗星钻。",
+        "recognition": "OCR",
+        "expected": "消耗\\s*0\\s*[个個]",
+        "roi": [
+            330,
+            400,
+            660,
+            230
+        ],
+        "action": "DoNothing",
+        "next": [
+            "RecruitConfirmOK"
+        ],
+        "on_error": [
+            "RecruitCancel"
+        ],
+        "timeout": 5000
+    },
+    "RecruitCancel": {
+        "description": "【安全退出】在确认框点「取消」（**不是** OK）。触发场景：消耗不是 0、零消耗门禁没命中、或任何不确定的情况 —— 点了它就当今天没抽，直接回主界面。",
+        "recognition": "OCR",
+        "expected": "取消",
+        "roi": [
+            400,
+            590,
+            400,
+            140
+        ],
+        "action": "Click",
+        "next": [
+            "RecruitClickHome",
+            "RecruitDone"
+        ],
+        "timeout": 6000,
+        "post_delay": 2000
+    },
+    "RecruitConfirmOK": {
+        "description": "【确认招募弹窗】标题「确认招募」，正文「将消耗0个星钻，进行1次招募。确定要招募吗？」底部左「取消」右「OK」→ 只认 OK（不认「取消」）。",
+        "recognition": "OCR",
+        "expected": "OK",
+        "roi": [
+            700,
+            590,
+            260,
+            110
+        ],
+        "action": "Click",
+        "next": [
+            "RecruitSkipAnim",
+            "RecruitResultTop"
+        ],
+        "timeout": 8000,
+        "post_delay": 2500
+    },
+    "RecruitSkipAnim": {
+        "description": "【抽卡演出·跳过】演出页右上角「SKIP」（实测 1080p ≈(1762,74) → 720p ≈(1175,49)）。演出也可能自己播完，所以它是可选的：命中就点，没命中就等结果页。",
+        "recognition": "OCR",
+        "expected": "SKIP|Skip|跳过|跳過",
+        "roi": [
+            1100,
+            5,
+            180,
+            90
+        ],
+        "action": "Click",
+        "next": [
+            "RecruitResultTop"
+        ],
+        "timeout": 6000,
+        "post_delay": 2000
+    },
+    "RecruitResultTop": {
+        "description": "【招募结算页】标题「招募结算」，右下两按钮：左「招募TOP」右「再次招募」。只点**招募TOP**（回卡池页），绝不能点「再次招募」（会再抽一次，免费次数已用完就是付费）。",
+        "recognition": "OCR",
+        "expected": "招募TOP",
+        "roi": [
+            740,
+            620,
+            270,
+            90
+        ],
+        "action": "Click",
+        "next": [
+            "RecruitClickHome"
+        ],
+        "timeout": 12000,
+        "post_delay": 2500
+    },
+    "RecruitClickHome": {
+        "description": "【回主界面】卡池页左上角主页（房子）图标 → 回主界面。模板复用项目已有的 home_icon.png。",
+        "recognition": "TemplateMatch",
+        "template": "home_icon.png",
+        "roi": [
+            110,
+            3,
+            85,
+            65
+        ],
+        "action": "Click",
+        "next": [
+            "RecruitDone"
+        ],
+        "timeout": 12000,
+        "post_delay": 2500
+    },
+    "RecruitDone": {
+        "description": "【终点】确认已回主界面（OCR 底部导航「演出」）→ 任务成功结束。今日免费抽已用掉时也从这里直接收尾（无事可做）。",
+        "recognition": "OCR",
+        "expected": "演出",
+        "roi": [
+            1020,
+            620,
+            200,
+            75
+        ],
+        "action": "DoNothing",
+        "next": [],
+        "timeout": 10000
+    }
+}
