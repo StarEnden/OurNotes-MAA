@@ -336,9 +336,7 @@
             "PassClickHome"
         ],
         "next": [
-            "PassClaimTopLitGate2",
-            "PassSlot2",
-            "PassClickHome"
+            "PassClaimTopLitGate2"
         ],
         "timeout": 8000,
         "post_delay": 2000
@@ -378,16 +376,16 @@
         "timeout": 10000
     },
     "PassSlot2": {
-        "description": "【轨道扫描②】点**另一张**通行证卡（未选中的那条轨道）。2026-10-17 实测布局：任务通行证页左侧上下两张卡，上卡中心 ≈(207,216)@1080p → 720p **[138,144]**；下卡（默认选中）在 (259)。原写的 [185,233] 其实点在下卡=已选中的那条，等于没切轨道（这就是多轨道一直没生效的原因）。点完先过 PassClaimTopLitGate（按钮亮才领），空轨道不盲点。",
+        "description": "【轨道扫描②】点左侧栏第 2 张通行证卡（720p 目标 (185,233) ≈ 1080p (277,350)）。max_hit=1：只点一次。",
         "recognition": "DirectHit",
         "action": "Click",
         "target": [
-            138,
-            144
+            185,
+            233
         ],
         "max_hit": 1,
         "next": [
-            "PassClaimTopLitGate"
+            "PassClaimTop"
         ],
         "post_delay": 3000
     },
@@ -401,7 +399,7 @@
         ],
         "max_hit": 1,
         "next": [
-            "PassClaimTopLitGate"
+            "PassClaimTop"
         ],
         "post_delay": 3000
     },

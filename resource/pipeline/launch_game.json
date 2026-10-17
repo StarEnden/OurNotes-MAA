@@ -275,10 +275,10 @@
         "recognition": "OCR",
         "expected": "关闭|關閉|關開",
         "roi": [
-            560,
-            600,
-            200,
-            80
+            380,
+            520,
+            360,
+            120
         ],
         "action": "Click",
         "next": [
