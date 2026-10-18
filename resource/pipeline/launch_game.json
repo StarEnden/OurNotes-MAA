@@ -11,6 +11,7 @@
             "LaunchTapToStart",
             "LaunchTouch",
             "LaunchSkipLoginBonus",
+            "LaunchVideoSkipOK",
             "LaunchNoticeClose",
             "LaunchSongSplash",
             "LaunchDateChange",
@@ -275,10 +276,10 @@
         "recognition": "OCR",
         "expected": "关闭|關閉|關開",
         "roi": [
-            380,
-            520,
             360,
-            120
+            480,
+            420,
+            240
         ],
         "action": "Click",
         "next": [
@@ -300,6 +301,27 @@
         ],
         "timeout": 5000
     },
+    "LaunchVideoSkipOK": {
+        "description": "【视频跳过·确认框】冷启动/登录剧情在播视频时，点右上 SKIP 会弹「要跳过这段视频吗？」+ 取消/OK。实测 720p：问题文字 box=[544,312,183,20]、OK box=[763,559,38,25] → 点 OK 中心 (782,571)。注意只认问句、点击用显式 target，避免点到问句本身。",
+        "recognition": "OCR",
+        "expected": "要跳过这段视频吗|要跳過這段視頻嗎",
+        "roi": [
+            500,
+            280,
+            300,
+            80
+        ],
+        "action": "Click",
+        "target": [
+            782,
+            571
+        ],
+        "next": [
+            "LaunchGame"
+        ],
+        "timeout": 3000,
+        "post_delay": 1500
+    },
     "LaunchBootWait": {
         "description": "【冷启动等待循环】StartApp 后游戏要 30~90s 才加载到标题。Maa 的 timeout 不会让链等屏幕出现，所以用显式等待：每次 pre_delay 20s 再查一遍各弹窗，最多 12 拍（≈4 分钟）。【2026-10-03】日期变更后游戏要重启+拉数据+过登录奖励，实测 148s 仍未到主界面，原 6 拍（120s）不够。",
         "recognition": "DirectHit",
@@ -310,6 +332,7 @@
             "LaunchTapToStart",
             "LaunchTouch",
             "LaunchSkipLoginBonus",
+            "LaunchVideoSkipOK",
             "LaunchNoticeClose",
             "LaunchSongSplash",
             "LaunchDateChange",
