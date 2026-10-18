@@ -625,10 +625,10 @@
         "recognition": "OCR",
         "expected": "[3-9]\\D|[1-9][0-9]\\D",
         "roi": [
-            1075,
-            650,
-            130,
-            45
+            1020,
+            8,
+            140,
+            54
         ],
         "action": "DoNothing",
         "next": [
