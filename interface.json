@@ -165,7 +165,7 @@
             "default_case": "全消耗+最高火",
             "description": "跳过演出时，在「确认跳过」面板里选择的 LIVE BOOST 消耗档位（也就是「火」）。全消耗+最高火 = 点面板上的「全部消耗」（消耗演出开始时持有的全部，每日 1 次，用掉后当日不可选）；3/2/1/0 火 = 对应固定档位（0 火 = 完全不消耗）。",
             "cases": [
-                { "name": "全消耗+最高火", "label": "🔥MAX（全消耗+最高火）", "pipeline_override": { "FLSkipTierPick": { "recognition": "DirectHit", "target": [315, 438] } } },
+                { "name": "全消耗+最高火", "label": "🔥MAX（全消耗+最高火）", "pipeline_override": { "FLSkipTierPick": { "recognition": "OCR", "expected": "全部消耗", "roi": [560, 340, 200, 60], "target": [307, 430, 16, 16] }, "FLSkipTierPick_V": { "recognition": "ColorMatch", "method": 4, "roi": [303, 425, 32, 22], "roi_offset": [0, 0, 0, 0], "lower": [200, 200, 200], "upper": [255, 255, 255], "count": 40 } } },
                 { "name": "5火", "label": "🔥5（5火）", "pipeline_override": { "FLSkipTierPick": { "recognition": "OCR", "expected": "^5$", "roi": [400, 85, 70, 280], "target_offset": [204, 0] }, "FLClickSkip": { "next": ["FLSkipTierPick", "FLClickSkipConfirm"] } } },
                 { "name": "4火", "label": "🔥4（4火）", "pipeline_override": { "FLSkipTierPick": { "recognition": "OCR", "expected": "^4$", "roi": [400, 85, 70, 280], "target_offset": [204, 0] }, "FLClickSkip": { "next": ["FLSkipTierPick", "FLClickSkipConfirm"] } } },
                 { "name": "3火", "label": "🔥3（3火）", "pipeline_override": { "FLSkipTierPick": { "recognition": "OCR", "expected": "^3$", "roi": [400, 85, 70, 280], "target_offset": [204, 0] }, "FLClickSkip": { "next": ["FLSkipTierPick", "FLClickSkipConfirm"] } } },

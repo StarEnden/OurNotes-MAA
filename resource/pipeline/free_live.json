@@ -812,7 +812,8 @@
         "recognition": "OCR",
         "action": "Click",
         "next": [
-            "FLClickSkipConfirm"
+            "FLSkipTierPick_V",
+            "FLTierMisPick"
         ],
         "timeout": 5000,
         "max_hit": 1,
@@ -894,7 +895,8 @@
             0
         ],
         "next": [
-            "FLClickSkipConfirm"
+            "FLTierFallback5_V",
+            "FLTierMisPick"
         ],
         "on_error": [
             "FLTierFallback4"
@@ -918,7 +920,8 @@
             0
         ],
         "next": [
-            "FLClickSkipConfirm"
+            "FLTierFallback4_V",
+            "FLTierMisPick"
         ],
         "on_error": [
             "FLTierFallback3"
@@ -942,7 +945,8 @@
             0
         ],
         "next": [
-            "FLClickSkipConfirm"
+            "FLTierFallback3_V",
+            "FLTierMisPick"
         ],
         "on_error": [
             "FLTierFallback2"
@@ -966,7 +970,8 @@
             0
         ],
         "next": [
-            "FLClickSkipConfirm"
+            "FLTierFallback2_V",
+            "FLTierMisPick"
         ],
         "on_error": [
             "FLTierFallback1"
@@ -990,7 +995,8 @@
             0
         ],
         "next": [
-            "FLClickSkipConfirm"
+            "FLTierFallback1_V",
+            "FLTierMisPick"
         ],
         "on_error": [
             "FLTierFallback0"
@@ -1014,7 +1020,8 @@
             0
         ],
         "next": [
-            "FLClickSkipConfirm"
+            "FLTierFallback0_V",
+            "FLTierMisPick"
         ],
         "on_error": [
             "FLTierFind0a"
@@ -1038,7 +1045,8 @@
             0
         ],
         "next": [
-            "FLClickSkipConfirm"
+            "FLTierFind0a_V",
+            "FLTierMisPick"
         ],
         "on_error": [
             "FLTierScroll1"
@@ -1090,7 +1098,8 @@
             0
         ],
         "next": [
-            "FLClickSkipConfirm"
+            "FLTierFind0b_V",
+            "FLTierMisPick"
         ],
         "on_error": [
             "FLTierScroll2"
@@ -1142,12 +1151,302 @@
             0
         ],
         "next": [
-            "FLClickSkipConfirm"
+            "FLTierFind0c_V",
+            "FLTierMisPick"
         ],
         "on_error": [
             "FLSkipTierClose"
         ],
         "timeout": 4000,
         "post_delay": 1200
+    },
+    "FLSkipTierPick_V": {
+        "description": "【档位生效校验】点完档位后回读该行底色：选中行底色 rgb(56,99,108) 青绿，未选中 rgb(56,63,116) 靛蓝，两者 RGB 可区分（实测 ColorMatch method=4 lower[40,85,90] upper[80,125,135] count>=300 命中选中行、不命中未选中行）。roi 直接引用刚点击的那个节点（roi 支持填节点名），再 +196 平移到复选框右侧底色区，不写死行坐标。校验不过 → FLTierMisPick 关面板中止，绝不带着不确定的档位去点跳过。",
+        "recognition": "ColorMatch",
+        "method": 4,
+        "lower": [
+            40,
+            85,
+            90
+        ],
+        "upper": [
+            80,
+            125,
+            135
+        ],
+        "count": 300,
+        "roi": "FLSkipTierPick",
+        "roi_offset": [
+            196,
+            0,
+            30,
+            0
+        ],
+        "action": "DoNothing",
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "timeout": 3000
+    },
+    "FLTierFallback5_V": {
+        "description": "【档位生效校验】点完档位后回读该行底色：选中行底色 rgb(56,99,108) 青绿，未选中 rgb(56,63,116) 靛蓝，两者 RGB 可区分（实测 ColorMatch method=4 lower[40,85,90] upper[80,125,135] count>=300 命中选中行、不命中未选中行）。roi 直接引用刚点击的那个节点（roi 支持填节点名），再 +196 平移到复选框右侧底色区，不写死行坐标。校验不过 → FLTierMisPick 关面板中止，绝不带着不确定的档位去点跳过。",
+        "recognition": "ColorMatch",
+        "method": 4,
+        "lower": [
+            40,
+            85,
+            90
+        ],
+        "upper": [
+            80,
+            125,
+            135
+        ],
+        "count": 300,
+        "roi": "FLTierFallback5",
+        "roi_offset": [
+            196,
+            0,
+            30,
+            0
+        ],
+        "action": "DoNothing",
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "timeout": 3000
+    },
+    "FLTierFallback4_V": {
+        "description": "【档位生效校验】点完档位后回读该行底色：选中行底色 rgb(56,99,108) 青绿，未选中 rgb(56,63,116) 靛蓝，两者 RGB 可区分（实测 ColorMatch method=4 lower[40,85,90] upper[80,125,135] count>=300 命中选中行、不命中未选中行）。roi 直接引用刚点击的那个节点（roi 支持填节点名），再 +196 平移到复选框右侧底色区，不写死行坐标。校验不过 → FLTierMisPick 关面板中止，绝不带着不确定的档位去点跳过。",
+        "recognition": "ColorMatch",
+        "method": 4,
+        "lower": [
+            40,
+            85,
+            90
+        ],
+        "upper": [
+            80,
+            125,
+            135
+        ],
+        "count": 300,
+        "roi": "FLTierFallback4",
+        "roi_offset": [
+            196,
+            0,
+            30,
+            0
+        ],
+        "action": "DoNothing",
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "timeout": 3000
+    },
+    "FLTierFallback3_V": {
+        "description": "【档位生效校验】点完档位后回读该行底色：选中行底色 rgb(56,99,108) 青绿，未选中 rgb(56,63,116) 靛蓝，两者 RGB 可区分（实测 ColorMatch method=4 lower[40,85,90] upper[80,125,135] count>=300 命中选中行、不命中未选中行）。roi 直接引用刚点击的那个节点（roi 支持填节点名），再 +196 平移到复选框右侧底色区，不写死行坐标。校验不过 → FLTierMisPick 关面板中止，绝不带着不确定的档位去点跳过。",
+        "recognition": "ColorMatch",
+        "method": 4,
+        "lower": [
+            40,
+            85,
+            90
+        ],
+        "upper": [
+            80,
+            125,
+            135
+        ],
+        "count": 300,
+        "roi": "FLTierFallback3",
+        "roi_offset": [
+            196,
+            0,
+            30,
+            0
+        ],
+        "action": "DoNothing",
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "timeout": 3000
+    },
+    "FLTierFallback2_V": {
+        "description": "【档位生效校验】点完档位后回读该行底色：选中行底色 rgb(56,99,108) 青绿，未选中 rgb(56,63,116) 靛蓝，两者 RGB 可区分（实测 ColorMatch method=4 lower[40,85,90] upper[80,125,135] count>=300 命中选中行、不命中未选中行）。roi 直接引用刚点击的那个节点（roi 支持填节点名），再 +196 平移到复选框右侧底色区，不写死行坐标。校验不过 → FLTierMisPick 关面板中止，绝不带着不确定的档位去点跳过。",
+        "recognition": "ColorMatch",
+        "method": 4,
+        "lower": [
+            40,
+            85,
+            90
+        ],
+        "upper": [
+            80,
+            125,
+            135
+        ],
+        "count": 300,
+        "roi": "FLTierFallback2",
+        "roi_offset": [
+            196,
+            0,
+            30,
+            0
+        ],
+        "action": "DoNothing",
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "timeout": 3000
+    },
+    "FLTierFallback1_V": {
+        "description": "【档位生效校验】点完档位后回读该行底色：选中行底色 rgb(56,99,108) 青绿，未选中 rgb(56,63,116) 靛蓝，两者 RGB 可区分（实测 ColorMatch method=4 lower[40,85,90] upper[80,125,135] count>=300 命中选中行、不命中未选中行）。roi 直接引用刚点击的那个节点（roi 支持填节点名），再 +196 平移到复选框右侧底色区，不写死行坐标。校验不过 → FLTierMisPick 关面板中止，绝不带着不确定的档位去点跳过。",
+        "recognition": "ColorMatch",
+        "method": 4,
+        "lower": [
+            40,
+            85,
+            90
+        ],
+        "upper": [
+            80,
+            125,
+            135
+        ],
+        "count": 300,
+        "roi": "FLTierFallback1",
+        "roi_offset": [
+            196,
+            0,
+            30,
+            0
+        ],
+        "action": "DoNothing",
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "timeout": 3000
+    },
+    "FLTierFallback0_V": {
+        "description": "【档位生效校验】点完档位后回读该行底色：选中行底色 rgb(56,99,108) 青绿，未选中 rgb(56,63,116) 靛蓝，两者 RGB 可区分（实测 ColorMatch method=4 lower[40,85,90] upper[80,125,135] count>=300 命中选中行、不命中未选中行）。roi 直接引用刚点击的那个节点（roi 支持填节点名），再 +196 平移到复选框右侧底色区，不写死行坐标。校验不过 → FLTierMisPick 关面板中止，绝不带着不确定的档位去点跳过。",
+        "recognition": "ColorMatch",
+        "method": 4,
+        "lower": [
+            40,
+            85,
+            90
+        ],
+        "upper": [
+            80,
+            125,
+            135
+        ],
+        "count": 300,
+        "roi": "FLTierFallback0",
+        "roi_offset": [
+            196,
+            0,
+            30,
+            0
+        ],
+        "action": "DoNothing",
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "timeout": 3000
+    },
+    "FLTierFind0a_V": {
+        "description": "【档位生效校验】点完档位后回读该行底色：选中行底色 rgb(56,99,108) 青绿，未选中 rgb(56,63,116) 靛蓝，两者 RGB 可区分（实测 ColorMatch method=4 lower[40,85,90] upper[80,125,135] count>=300 命中选中行、不命中未选中行）。roi 直接引用刚点击的那个节点（roi 支持填节点名），再 +196 平移到复选框右侧底色区，不写死行坐标。校验不过 → FLTierMisPick 关面板中止，绝不带着不确定的档位去点跳过。",
+        "recognition": "ColorMatch",
+        "method": 4,
+        "lower": [
+            40,
+            85,
+            90
+        ],
+        "upper": [
+            80,
+            125,
+            135
+        ],
+        "count": 300,
+        "roi": "FLTierFind0a",
+        "roi_offset": [
+            196,
+            0,
+            30,
+            0
+        ],
+        "action": "DoNothing",
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "timeout": 3000
+    },
+    "FLTierFind0b_V": {
+        "description": "【档位生效校验】点完档位后回读该行底色：选中行底色 rgb(56,99,108) 青绿，未选中 rgb(56,63,116) 靛蓝，两者 RGB 可区分（实测 ColorMatch method=4 lower[40,85,90] upper[80,125,135] count>=300 命中选中行、不命中未选中行）。roi 直接引用刚点击的那个节点（roi 支持填节点名），再 +196 平移到复选框右侧底色区，不写死行坐标。校验不过 → FLTierMisPick 关面板中止，绝不带着不确定的档位去点跳过。",
+        "recognition": "ColorMatch",
+        "method": 4,
+        "lower": [
+            40,
+            85,
+            90
+        ],
+        "upper": [
+            80,
+            125,
+            135
+        ],
+        "count": 300,
+        "roi": "FLTierFind0b",
+        "roi_offset": [
+            196,
+            0,
+            30,
+            0
+        ],
+        "action": "DoNothing",
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "timeout": 3000
+    },
+    "FLTierFind0c_V": {
+        "description": "【档位生效校验】点完档位后回读该行底色：选中行底色 rgb(56,99,108) 青绿，未选中 rgb(56,63,116) 靛蓝，两者 RGB 可区分（实测 ColorMatch method=4 lower[40,85,90] upper[80,125,135] count>=300 命中选中行、不命中未选中行）。roi 直接引用刚点击的那个节点（roi 支持填节点名），再 +196 平移到复选框右侧底色区，不写死行坐标。校验不过 → FLTierMisPick 关面板中止，绝不带着不确定的档位去点跳过。",
+        "recognition": "ColorMatch",
+        "method": 4,
+        "lower": [
+            40,
+            85,
+            90
+        ],
+        "upper": [
+            80,
+            125,
+            135
+        ],
+        "count": 300,
+        "roi": "FLTierFind0c",
+        "roi_offset": [
+            196,
+            0,
+            30,
+            0
+        ],
+        "action": "DoNothing",
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "timeout": 3000
+    },
+    "FLTierMisPick": {
+        "description": "【档位没生效·中止】点击后目标行没有变成选中底色，说明点偏了或识别错行。此时关面板收尾，不做任何跳过，避免按错误的档位白白消耗。",
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "next": [
+            "FLSkipTierClose"
+        ],
+        "timeout": 3000
     }
 }
