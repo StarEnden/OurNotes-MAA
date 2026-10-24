@@ -127,18 +127,17 @@ CLEAN_INSTANCE = {
 
 
 # 发行包预置的全局配置（GUI 更新设置）
-# 说明：EnableAutoUpdateResource = True（v0.1.6 起默认开启）—— 资源包是全量的
-# （含 MaaFramework/MFAAvalonia/adb，130MB+），开启后启动时发现有新版会自动下载安装，
-# 好处是用户始终是最新修复版；代价是每次有新版静默下 130MB（国内从 GitHub 拉可能慢或失败）。
-# 同时保留 EnableCheckVersion=True，下载失败时用户能察觉。
-# 想改回「只提示、由用户决定」，把下面 EnableAutoUpdateResource 设为 False 即可。
+# 说明：EnableAutoUpdateResource = False —— 资源包是全量的
+# （含 MaaFramework/MFAAvalonia/adb，130MB+），自动下载会静默拉整包且国内常失败，
+# 所以默认改为「只提示、由用户决定」。EnableCheckVersion=True 仍会在启动时检查并提示。
+# 想让 GUI 拿到新版自动安装，把下面 EnableAutoUpdateResource 设为 True 即可。
 CLEAN_GLOBAL_CONFIG = {
     "CurrentLanguage": "zh-CN",
     "ColorTheme": "Blue",
     "BaseTheme": "Light",
     "ResourceUpdateChannelInitialized": True,
     "EnableCheckVersion": True,
-    "EnableAutoUpdateResource": True,
+    "EnableAutoUpdateResource": False,
     "ResourceUpdateChannelIndex": 2,
     "DownloadSourceIndex": 0,
     "EnableAutoUpdateMFA": False,
