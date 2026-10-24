@@ -773,36 +773,64 @@
         "description": "【全消耗门禁·跳过路】点「跳过」打开面板后，先 OCR 看「全部消耗」那行还有没有次数（「今日剩余N次」/「全部消耗剩余N次」，N>0）。有 → 去勾复选框；没有（「今日次数已用完。0」，每日仅 1 次，23:00 重置）→ 不勾，直接点面板里的「跳过」。避免去点一个已失效的复选框。",
         "recognition": "OCR",
         "expected": "全部消耗剩余[1-9]|今日剩余[1-9]|全部消耗剩餘[1-9]|今日剩餘[1-9]",
-        "roi": [560, 370, 300, 90],
+        "roi": [
+            560,
+            370,
+            300,
+            90
+        ],
         "action": "DoNothing",
-        "next": ["FLSkipTierPick"],
-        "on_error": ["FLClickSkipConfirm"],
+        "next": [
+            "FLSkipTierPick"
+        ],
+        "on_error": [
+            "FLClickSkipConfirm"
+        ],
         "timeout": 3000
     },
     "FLBAllGate": {
         "description": "【全消耗门禁·消耗LB路】由「消耗LB」打开同一个面板时同样先确认还有没有全消耗次数。有 → 勾复选框；没有 → 直接点 OK（保持当前档位）。",
         "recognition": "OCR",
         "expected": "全部消耗剩余[1-9]|今日剩余[1-9]|全部消耗剩餘[1-9]|今日剩餘[1-9]",
-        "roi": [560, 370, 300, 90],
+        "roi": [
+            560,
+            370,
+            300,
+            90
+        ],
         "action": "DoNothing",
-        "next": ["FLBSelectAll"],
-        "on_error": ["FLBOK"],
+        "next": [
+            "FLBSelectAll"
+        ],
+        "on_error": [
+            "FLBOK"
+        ],
         "timeout": 3000
     },
     "FLSkipTierPick": {
-        "description": "【跳过·选档】在「确认跳过」面板里选择 LIVE BOOST 消耗档位。⚠️默认档位（全消耗）要**勾左边的复选框**，不是点「全部消耗」文字：档位行（720p）：3火(637,126) / 2火(637,181) / 1火(637,237) / 0火(637,293)；「全部消耗」行(644,366，每日 1 次)。默认 target 指向「全部消耗」；GUI 的「消耗档位」下拉会用 pipeline_override 覆盖 target。",
-        "recognition": "DirectHit",
+        "description": "【跳过·选档】「确认跳过」面板选 LIVE BOOST 档位。⚠️档位行数随 TWG 等级增长会整列下移，所以不写死 y：用 OCR 在档位数字列(x 400~470)里找目标数字，再用 target_offset(+204,0) 偏移到右侧复选框。2026-10-24 实测 720p：数字 3→(433,126) 2→(433,180) 1→(434,237) 0→(434,293)，复选框在 x≈637；面板默认已选 3火。「全部消耗」走 DirectHit 点左侧复选框(315,438，每日1次)。读不到目标数字则不点，由 on_error 收尾。",
+        "recognition": "OCR",
         "action": "Click",
-        "target": [
-            315,
-            438
-        ],
         "next": [
             "FLClickSkipConfirm"
         ],
         "timeout": 5000,
         "max_hit": 1,
-        "post_delay": 1200
+        "post_delay": 1200,
+        "expected": "^3$",
+        "roi": [
+            400,
+            85,
+            70,
+            250
+        ],
+        "target_offset": [
+            204,
+            0
+        ],
+        "on_error": [
+            "FLSkipTierClose"
+        ]
     },
     "FLBondReward": {
         "description": "【意外弹窗】跳过演出后可能弹出「羁绊奖励详情」（角色羁绊升级，发技能强化券等，一个角色一个）。【2026-10-03 实测补】跑完整跳过链时正是被它卡住 → 链里 next 全不匹配 → 任务 status=4000。标题在屏幕顶部中央，关闭按钮在底部中央（720p 641,660）。故意用明确 target 而不是命中的标题框中心（标题在上方，点它没用）。",
@@ -829,5 +857,25 @@
         ],
         "timeout": 3000,
         "post_delay": 1200
+    },
+    "FLSkipTierClose": {
+        "description": "【档位识别失败·收尾】OCR 读不到目标档位时点面板左下「关闭」退出，绝不猜坐标点错档。实测 720p 关闭按钮 (498,658)。",
+        "recognition": "OCR",
+        "expected": "关闭|關閉",
+        "roi": [
+            430,
+            620,
+            140,
+            70
+        ],
+        "action": "Click",
+        "next": [
+            "FLClickHomeEnd"
+        ],
+        "on_error": [
+            "FLDone"
+        ],
+        "timeout": 5000,
+        "post_delay": 1500
     }
 }
