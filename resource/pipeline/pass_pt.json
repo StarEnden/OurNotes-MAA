@@ -56,14 +56,14 @@
         "post_delay": 2500
     },
     "PassPtOK": {
-        "description": "【「获得通行证pt」结算弹窗】点「开服纪念/赛季任务/通行证」横幅后可能弹出的通行证pt结算层（正文「获得通行证pt / +N / 还需 M」，底部居中「OK」）。2026-10-11 实测：原链在该路径上没有 OK 处理器 → 8s 超时后整任务 4000。⚠️ roi 只框弹窗底部按钮区（y 480-600），不要放大到整屏，否则会误点任务页的「关闭」「下一步」。",
+        "description": "【通行证弹窗·OK】PASS 侧有几种弹窗：①「获得通行证pt」结算层 ②「PASS LEVEL UP」升级层（实测 OK box=[622,641,36,22]，y=641）。原 roi 到 y=600，差 41px 漏掉升级层 → 任务 4000。现 roi 放到 y 460~700 覆盖两种，并把 expected 收紧为整词 ^OK$，避免在任务页误点「关闭/下一步」。",
         "recognition": "OCR",
-        "expected": "OK",
+        "expected": "^OK$",
         "roi": [
             450,
-            480,
+            460,
             400,
-            120
+            240
         ],
         "action": "Click",
         "max_hit": 6,
@@ -157,15 +157,27 @@
         ],
         "timeout": 8000
     },
-
     "PassClaimTopLitGate": {
         "description": "【奖励列表·可领门禁】右下「一键领取」在**有可领**时亮起(V≈229/8994px)、**无可领**时是灰的(V≈117/0px)，实测 100% 区分。命中=有东西可领 → 点它一键领取；没亮 → 去通行证任务页。⚠️ 不能只认它的文字：灰色时文字也在，会永远命中。",
         "recognition": "ColorMatch",
         "method": 40,
-        "lower": [95, 60, 180],
-        "upper": [125, 255, 255],
+        "lower": [
+            95,
+            60,
+            180
+        ],
+        "upper": [
+            125,
+            255,
+            255
+        ],
         "count": 800,
-        "roi": [1040, 635, 240, 60],
+        "roi": [
+            1040,
+            635,
+            240,
+            60
+        ],
         "action": "DoNothing",
         "next": [
             "PassClaimTop"
@@ -214,10 +226,23 @@
         "description": "【奖励列表·回领门禁】任务页关闭回到奖励列表后，再查一次右下按钮：亮 → 再领一次（任务奖励可能又解锁了新等级奖励）；灰 → 收尾回主界面。",
         "recognition": "ColorMatch",
         "method": 40,
-        "lower": [95, 60, 180],
-        "upper": [125, 255, 255],
+        "lower": [
+            95,
+            60,
+            180
+        ],
+        "upper": [
+            125,
+            255,
+            255
+        ],
         "count": 800,
-        "roi": [1040, 635, 240, 60],
+        "roi": [
+            1040,
+            635,
+            240,
+            60
+        ],
         "action": "DoNothing",
         "next": [
             "PassClaimTop"
@@ -250,10 +275,23 @@
         "description": "【通行证·亮色门禁】页面没有任何标志性文字，唯一差别是「领取/一键领取」按钮**亮不亮**。用 ColorMatch(HSV) 只框底部「一键领取」按钮：亮态 V≈235、灰态 V≈116，实测灰态页面命中 0 像素、亮态模板命中 11981 像素 → 取 count=300 极安全。命中=有可领 → PassClaimDaily；没命中 → 先去切「常规」页（可领项可能只在那页）。",
         "recognition": "ColorMatch",
         "method": 40,
-        "lower": [95, 60, 200],
-        "upper": [125, 215, 255],
+        "lower": [
+            95,
+            60,
+            200
+        ],
+        "upper": [
+            125,
+            215,
+            255
+        ],
         "count": 300,
-        "roi": [690, 620, 200, 60],
+        "roi": [
+            690,
+            620,
+            200,
+            60
+        ],
         "action": "DoNothing",
         "next": [
             "PassClaimDaily"
@@ -483,9 +521,9 @@
         ],
         "max_hit": 1,
         "next": [
-                "PassClaimLitGate",
-                "PassDailyClose"
-            ],
+            "PassClaimLitGate",
+            "PassDailyClose"
+        ],
         "post_delay": 2500,
         "timeout": 3000
     }
