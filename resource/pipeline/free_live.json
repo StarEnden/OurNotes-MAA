@@ -1017,9 +1017,137 @@
             "FLClickSkipConfirm"
         ],
         "on_error": [
-            "FLSkipTierClose"
+            "FLTierFind0a"
         ],
         "timeout": 5000,
+        "post_delay": 1200
+    },
+    "FLTierFind0a": {
+        "description": "【找 0火·第1次】在档位列表可视区 OCR 找 ^0$。命中即勾选（+204,0 到复选框）。没找到 → 说明 0火 被挤出可视区，去滚动列表再找（继续链式重试）。",
+        "recognition": "OCR",
+        "expected": "^0$",
+        "roi": [
+            400,
+            85,
+            70,
+            280
+        ],
+        "action": "Click",
+        "target_offset": [
+            204,
+            0
+        ],
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "on_error": [
+            "FLTierScroll1"
+        ],
+        "timeout": 4000,
+        "post_delay": 1200
+    },
+    "FLTierScroll1": {
+        "description": "【滚动档位列表·第1次】把列表往上拖，翻出被挤出可视区的低档（如 0火）。⚠️ 必须给节点一个真实识别框：DirectHit 没有 box，Swipe 会报 failed to get swipe begin rect。做法 = OCR 认一行的「奖励·EXP」→ begin 取该框 → begin_offset 下移 150 → end 拖到列表顶部。",
+        "recognition": "OCR",
+        "expected": "奖励.*EXP|奖励.*EXP",
+        "roi": [
+            520,
+            80,
+            220,
+            330
+        ],
+        "action": "Swipe",
+        "begin": true,
+        "begin_offset": [
+            0,
+            150,
+            0,
+            0
+        ],
+        "end": [
+            600,
+            120
+        ],
+        "duration": 500,
+        "next": [
+            "FLTierFind0b"
+        ],
+        "post_delay": 900
+    },
+    "FLTierFind0b": {
+        "description": "【找 0火·第2次】在档位列表可视区 OCR 找 ^0$。命中即勾选（+204,0 到复选框）。没找到 → 说明 0火 被挤出可视区，去滚动列表再找（继续链式重试）。",
+        "recognition": "OCR",
+        "expected": "^0$",
+        "roi": [
+            400,
+            85,
+            70,
+            280
+        ],
+        "action": "Click",
+        "target_offset": [
+            204,
+            0
+        ],
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "on_error": [
+            "FLTierScroll2"
+        ],
+        "timeout": 4000,
+        "post_delay": 1200
+    },
+    "FLTierScroll2": {
+        "description": "【滚动档位列表·第2次】把列表往上拖，翻出被挤出可视区的低档（如 0火）。⚠️ 必须给节点一个真实识别框：DirectHit 没有 box，Swipe 会报 failed to get swipe begin rect。做法 = OCR 认一行的「奖励·EXP」→ begin 取该框 → begin_offset 下移 150 → end 拖到列表顶部。",
+        "recognition": "OCR",
+        "expected": "奖励.*EXP|奖励.*EXP",
+        "roi": [
+            520,
+            80,
+            220,
+            330
+        ],
+        "action": "Swipe",
+        "begin": true,
+        "begin_offset": [
+            0,
+            150,
+            0,
+            0
+        ],
+        "end": [
+            600,
+            120
+        ],
+        "duration": 500,
+        "next": [
+            "FLTierFind0c"
+        ],
+        "post_delay": 900
+    },
+    "FLTierFind0c": {
+        "description": "【找 0火·第3次】在档位列表可视区 OCR 找 ^0$。命中即勾选（+204,0 到复选框）。没找到 → 说明 0火 被挤出可视区，去滚动列表再找（已滚两次仍没有，关面板中止）。",
+        "recognition": "OCR",
+        "expected": "^0$",
+        "roi": [
+            400,
+            85,
+            70,
+            280
+        ],
+        "action": "Click",
+        "target_offset": [
+            204,
+            0
+        ],
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "on_error": [
+            "FLSkipTierClose"
+        ],
+        "timeout": 4000,
         "post_delay": 1200
     }
 }

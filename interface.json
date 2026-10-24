@@ -168,10 +168,10 @@
                 { "name": "全消耗+最高火", "label": "🔥MAX（全消耗+最高火）", "pipeline_override": { "FLSkipTierPick": { "recognition": "DirectHit", "target": [315, 438] } } },
                 { "name": "5火", "label": "🔥5（5火）", "pipeline_override": { "FLSkipTierPick": { "recognition": "OCR", "expected": "^5$", "roi": [400, 85, 70, 280], "target_offset": [204, 0] }, "FLClickSkip": { "next": ["FLSkipTierPick", "FLClickSkipConfirm"] } } },
                 { "name": "4火", "label": "🔥4（4火）", "pipeline_override": { "FLSkipTierPick": { "recognition": "OCR", "expected": "^4$", "roi": [400, 85, 70, 280], "target_offset": [204, 0] }, "FLClickSkip": { "next": ["FLSkipTierPick", "FLClickSkipConfirm"] } } },
-                { "name": "3火", "label": "🔥3（3火）", "pipeline_override": { "FLSkipTierPick": { "recognition": "OCR", "expected": "^3$", "roi": [400, 85, 70, 250], "target_offset": [204, 0] }, "FLClickSkip": { "next": ["FLSkipTierPick", "FLClickSkipConfirm"] } } },
-                { "name": "2火", "label": "🔥2（2火）", "pipeline_override": { "FLSkipTierPick": { "recognition": "OCR", "expected": "^2$", "roi": [400, 85, 70, 250], "target_offset": [204, 0] }, "FLClickSkip": { "next": ["FLSkipTierPick", "FLClickSkipConfirm"] } } },
-                { "name": "1火", "label": "🔥1（1火）", "pipeline_override": { "FLSkipTierPick": { "recognition": "OCR", "expected": "^1$", "roi": [400, 85, 70, 250], "target_offset": [204, 0] }, "FLClickSkip": { "next": ["FLSkipTierPick", "FLClickSkipConfirm"] } } },
-                { "name": "0火", "label": "🔥0（0火）", "pipeline_override": { "FLSkipTierPick": { "recognition": "OCR", "expected": "^0$", "roi": [400, 85, 70, 250], "target_offset": [204, 0] }, "FLClickSkip": { "next": ["FLSkipTierPick", "FLClickSkipConfirm"] } } }
+                { "name": "3火", "label": "🔥3（3火）", "pipeline_override": { "FLSkipTierPick": { "recognition": "OCR", "expected": "^3$", "roi": [400, 85, 70, 280], "target_offset": [204, 0] }, "FLClickSkip": { "next": ["FLSkipTierPick", "FLClickSkipConfirm"] } } },
+                { "name": "2火", "label": "🔥2（2火）", "pipeline_override": { "FLSkipTierPick": { "recognition": "OCR", "expected": "^2$", "roi": [400, 85, 70, 280], "target_offset": [204, 0] }, "FLClickSkip": { "next": ["FLSkipTierPick", "FLClickSkipConfirm"] } } },
+                { "name": "1火", "label": "🔥1（1火）", "pipeline_override": { "FLSkipTierPick": { "recognition": "OCR", "expected": "^1$", "roi": [400, 85, 70, 280], "target_offset": [204, 0] }, "FLClickSkip": { "next": ["FLSkipTierPick", "FLClickSkipConfirm"] } } },
+                { "name": "0火", "label": "🔥0（0火）", "pipeline_override": { "FLSkipTierPick": { "recognition": "OCR", "expected": "^0$", "roi": [400, 85, 70, 280], "target_offset": [204, 0], "on_error": ["FLTierFind0a"] }, "FLClickSkip": { "next": ["FLSkipTierPick", "FLClickSkipConfirm"] } } }
             ]
         }
     },
