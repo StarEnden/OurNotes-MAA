@@ -822,14 +822,14 @@
             400,
             85,
             70,
-            250
+            280
         ],
         "target_offset": [
             204,
             0
         ],
         "on_error": [
-            "FLSkipTierClose"
+            "FLTierFallback5"
         ]
     },
     "FLBondReward": {
@@ -877,5 +877,149 @@
         ],
         "timeout": 5000,
         "post_delay": 1500
+    },
+    "FLTierFallback5": {
+        "description": "【档位降级兜底 5 火】目标档位没识别到时，按 5→4→3→2→1→0 顺次找当前账号可选的最高档；全部找不到才 FLSkipTierClose 关面板中止。OCR 在档位数字列(x 400~470, y 85~365)找 ^5$，偏移(+204,0)勾右侧。",
+        "recognition": "OCR",
+        "expected": "^5$",
+        "roi": [
+            400,
+            85,
+            70,
+            280
+        ],
+        "action": "Click",
+        "target_offset": [
+            204,
+            0
+        ],
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "on_error": [
+            "FLTierFallback4"
+        ],
+        "timeout": 5000,
+        "post_delay": 1200
+    },
+    "FLTierFallback4": {
+        "description": "【档位降级兜底 4 火】目标档位没识别到时，按 5→4→3→2→1→0 顺次找当前账号可选的最高档；全部找不到才 FLSkipTierClose 关面板中止。OCR 在档位数字列(x 400~470, y 85~365)找 ^4$，偏移(+204,0)勾右侧。",
+        "recognition": "OCR",
+        "expected": "^4$",
+        "roi": [
+            400,
+            85,
+            70,
+            280
+        ],
+        "action": "Click",
+        "target_offset": [
+            204,
+            0
+        ],
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "on_error": [
+            "FLTierFallback3"
+        ],
+        "timeout": 5000,
+        "post_delay": 1200
+    },
+    "FLTierFallback3": {
+        "description": "【档位降级兜底 3 火】目标档位没识别到时，按 5→4→3→2→1→0 顺次找当前账号可选的最高档；全部找不到才 FLSkipTierClose 关面板中止。OCR 在档位数字列(x 400~470, y 85~365)找 ^3$，偏移(+204,0)勾右侧。",
+        "recognition": "OCR",
+        "expected": "^3$",
+        "roi": [
+            400,
+            85,
+            70,
+            280
+        ],
+        "action": "Click",
+        "target_offset": [
+            204,
+            0
+        ],
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "on_error": [
+            "FLTierFallback2"
+        ],
+        "timeout": 5000,
+        "post_delay": 1200
+    },
+    "FLTierFallback2": {
+        "description": "【档位降级兜底 2 火】目标档位没识别到时，按 5→4→3→2→1→0 顺次找当前账号可选的最高档；全部找不到才 FLSkipTierClose 关面板中止。OCR 在档位数字列(x 400~470, y 85~365)找 ^2$，偏移(+204,0)勾右侧。",
+        "recognition": "OCR",
+        "expected": "^2$",
+        "roi": [
+            400,
+            85,
+            70,
+            280
+        ],
+        "action": "Click",
+        "target_offset": [
+            204,
+            0
+        ],
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "on_error": [
+            "FLTierFallback1"
+        ],
+        "timeout": 5000,
+        "post_delay": 1200
+    },
+    "FLTierFallback1": {
+        "description": "【档位降级兜底 1 火】目标档位没识别到时，按 5→4→3→2→1→0 顺次找当前账号可选的最高档；全部找不到才 FLSkipTierClose 关面板中止。OCR 在档位数字列(x 400~470, y 85~365)找 ^1$，偏移(+204,0)勾右侧。",
+        "recognition": "OCR",
+        "expected": "^1$",
+        "roi": [
+            400,
+            85,
+            70,
+            280
+        ],
+        "action": "Click",
+        "target_offset": [
+            204,
+            0
+        ],
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "on_error": [
+            "FLTierFallback0"
+        ],
+        "timeout": 5000,
+        "post_delay": 1200
+    },
+    "FLTierFallback0": {
+        "description": "【档位降级兜底 0 火】目标档位没识别到时，按 5→4→3→2→1→0 顺次找当前账号可选的最高档；全部找不到才 FLSkipTierClose 关面板中止。OCR 在档位数字列(x 400~470, y 85~365)找 ^0$，偏移(+204,0)勾右侧。",
+        "recognition": "OCR",
+        "expected": "^0$",
+        "roi": [
+            400,
+            85,
+            70,
+            280
+        ],
+        "action": "Click",
+        "target_offset": [
+            204,
+            0
+        ],
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "on_error": [
+            "FLSkipTierClose"
+        ],
+        "timeout": 5000,
+        "post_delay": 1200
     }
 }
