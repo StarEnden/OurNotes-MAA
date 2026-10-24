@@ -60,9 +60,9 @@
         "expected": "消耗\\s*0\\s*[个個]",
         "roi": [
             330,
-            400,
+            250,
             660,
-            230
+            400
         ],
         "action": "DoNothing",
         "next": [
@@ -121,9 +121,32 @@
         ],
         "action": "Click",
         "next": [
+            "RecruitSkipAnim",
+            "RecruitBonusOK"
+        ],
+        "max_hit": 4,
+        "timeout": 6000,
+        "post_delay": 2000
+    },
+    "RecruitBonusOK": {
+        "description": "【招募赠品弹窗】跳过结果动画后会先弹「获得招募赠品 已发送到礼物盒」→ 点 OK。实测 720p OK box=[620,648,40,25] → 点中心 (640,660)。处理完才进「招募结算」页。",
+        "recognition": "OCR",
+        "expected": "获得.*赠品|獲得.*贈品|已发送到",
+        "roi": [
+            300,
+            560,
+            680,
+            140
+        ],
+        "action": "Click",
+        "target": [
+            640,
+            660
+        ],
+        "next": [
             "RecruitResultTop"
         ],
-        "timeout": 6000,
+        "timeout": 8000,
         "post_delay": 2000
     },
     "RecruitResultTop": {
