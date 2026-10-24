@@ -830,7 +830,16 @@
             0
         ],
         "on_error": [
-            "FLTierFallback5"
+            "FLTierFallback8",
+            "FLTierFallback7",
+            "FLTierFallback6",
+            "FLTierFallback5",
+            "FLTierFallback4",
+            "FLTierFallback3",
+            "FLTierFallback2",
+            "FLTierFallback1",
+            "FLTierFallback0",
+            "FLSkipTierClose"
         ]
     },
     "FLBondReward": {
@@ -898,9 +907,6 @@
             "FLTierFallback5_V",
             "FLTierMisPick"
         ],
-        "on_error": [
-            "FLTierFallback4"
-        ],
         "timeout": 5000,
         "post_delay": 1200
     },
@@ -922,9 +928,6 @@
         "next": [
             "FLTierFallback4_V",
             "FLTierMisPick"
-        ],
-        "on_error": [
-            "FLTierFallback3"
         ],
         "timeout": 5000,
         "post_delay": 1200
@@ -948,9 +951,6 @@
             "FLTierFallback3_V",
             "FLTierMisPick"
         ],
-        "on_error": [
-            "FLTierFallback2"
-        ],
         "timeout": 5000,
         "post_delay": 1200
     },
@@ -972,9 +972,6 @@
         "next": [
             "FLTierFallback2_V",
             "FLTierMisPick"
-        ],
-        "on_error": [
-            "FLTierFallback1"
         ],
         "timeout": 5000,
         "post_delay": 1200
@@ -998,14 +995,11 @@
             "FLTierFallback1_V",
             "FLTierMisPick"
         ],
-        "on_error": [
-            "FLTierFallback0"
-        ],
         "timeout": 5000,
         "post_delay": 1200
     },
     "FLTierFallback0": {
-        "description": "【档位降级兜底 0 火】目标档位没识别到时，按 5→4→3→2→1→0 顺次找当前账号可选的最高档；全部找不到才 FLSkipTierClose 关面板中止。OCR 在档位数字列(x 400~470, y 85~365)找 ^0$，偏移(+204,0)勾右侧。",
+        "description": "【档位降级兜底 0 火】平铺降级链的最后一档：8→7→6→5→4→3→2→1→0 依次尝试，OCR 在档位数字列找 ^0$，偏移(+204,0)勾右侧；全都找不到由父节点候选列表末尾的 FLSkipTierClose 关面板中止。",
         "recognition": "OCR",
         "expected": "^0$",
         "roi": [
@@ -1022,9 +1016,6 @@
         "next": [
             "FLTierFallback0_V",
             "FLTierMisPick"
-        ],
-        "on_error": [
-            "FLTierFind0a"
         ],
         "timeout": 5000,
         "post_delay": 1200
@@ -1446,6 +1437,156 @@
         "action": "DoNothing",
         "next": [
             "FLSkipTierClose"
+        ],
+        "timeout": 3000
+    },
+    "FLTierFallback8": {
+        "description": "【档位降级兜底 8 火】目标档位没识别到时按 8→7→6→5→4→3→2→1→0 顺次找当前账号可选的最高档；全部找不到才 FLSkipTierClose 关面板中止。OCR 在档位数字列(x 400~470)找 ^8$，偏移(+204,0)勾右侧。",
+        "recognition": "OCR",
+        "expected": "^8$",
+        "roi": [
+            400,
+            85,
+            70,
+            280
+        ],
+        "action": "Click",
+        "target_offset": [
+            204,
+            0
+        ],
+        "next": [
+            "FLTierFallback8_V",
+            "FLTierMisPick"
+        ],
+        "timeout": 5000,
+        "post_delay": 1200
+    },
+    "FLTierFallback8_V": {
+        "description": "【档位生效校验】点完档位后回读该行底色：选中行底色 rgb(56,99,108) 青绿，未选中 rgb(56,63,116) 靛蓝，两者 RGB 可区分（实测 ColorMatch method=4 lower[40,85,90] upper[80,125,135] count>=300 命中选中行、不命中未选中行）。roi 直接引用刚点击的那个节点（roi 支持填节点名），再 +196 平移到复选框右侧底色区，不写死行坐标。校验不过 → FLTierMisPick 关面板中止，绝不带着不确定的档位去点跳过。",
+        "recognition": "ColorMatch",
+        "method": 4,
+        "lower": [
+            40,
+            85,
+            90
+        ],
+        "upper": [
+            80,
+            125,
+            135
+        ],
+        "count": 300,
+        "roi": "FLTierFallback8",
+        "roi_offset": [
+            196,
+            0,
+            30,
+            0
+        ],
+        "action": "DoNothing",
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "timeout": 3000
+    },
+    "FLTierFallback7": {
+        "description": "【档位降级兜底 7 火】目标档位没识别到时按 8→7→6→5→4→3→2→1→0 顺次找当前账号可选的最高档；全部找不到才 FLSkipTierClose 关面板中止。OCR 在档位数字列(x 400~470)找 ^7$，偏移(+204,0)勾右侧。",
+        "recognition": "OCR",
+        "expected": "^7$",
+        "roi": [
+            400,
+            85,
+            70,
+            280
+        ],
+        "action": "Click",
+        "target_offset": [
+            204,
+            0
+        ],
+        "next": [
+            "FLTierFallback7_V",
+            "FLTierMisPick"
+        ],
+        "timeout": 5000,
+        "post_delay": 1200
+    },
+    "FLTierFallback7_V": {
+        "description": "【档位生效校验】点完档位后回读该行底色：选中行底色 rgb(56,99,108) 青绿，未选中 rgb(56,63,116) 靛蓝，两者 RGB 可区分（实测 ColorMatch method=4 lower[40,85,90] upper[80,125,135] count>=300 命中选中行、不命中未选中行）。roi 直接引用刚点击的那个节点（roi 支持填节点名），再 +196 平移到复选框右侧底色区，不写死行坐标。校验不过 → FLTierMisPick 关面板中止，绝不带着不确定的档位去点跳过。",
+        "recognition": "ColorMatch",
+        "method": 4,
+        "lower": [
+            40,
+            85,
+            90
+        ],
+        "upper": [
+            80,
+            125,
+            135
+        ],
+        "count": 300,
+        "roi": "FLTierFallback7",
+        "roi_offset": [
+            196,
+            0,
+            30,
+            0
+        ],
+        "action": "DoNothing",
+        "next": [
+            "FLClickSkipConfirm"
+        ],
+        "timeout": 3000
+    },
+    "FLTierFallback6": {
+        "description": "【档位降级兜底 6 火】目标档位没识别到时按 8→7→6→5→4→3→2→1→0 顺次找当前账号可选的最高档；全部找不到才 FLSkipTierClose 关面板中止。OCR 在档位数字列(x 400~470)找 ^6$，偏移(+204,0)勾右侧。",
+        "recognition": "OCR",
+        "expected": "^6$",
+        "roi": [
+            400,
+            85,
+            70,
+            280
+        ],
+        "action": "Click",
+        "target_offset": [
+            204,
+            0
+        ],
+        "next": [
+            "FLTierFallback6_V",
+            "FLTierMisPick"
+        ],
+        "timeout": 5000,
+        "post_delay": 1200
+    },
+    "FLTierFallback6_V": {
+        "description": "【档位生效校验】点完档位后回读该行底色：选中行底色 rgb(56,99,108) 青绿，未选中 rgb(56,63,116) 靛蓝，两者 RGB 可区分（实测 ColorMatch method=4 lower[40,85,90] upper[80,125,135] count>=300 命中选中行、不命中未选中行）。roi 直接引用刚点击的那个节点（roi 支持填节点名），再 +196 平移到复选框右侧底色区，不写死行坐标。校验不过 → FLTierMisPick 关面板中止，绝不带着不确定的档位去点跳过。",
+        "recognition": "ColorMatch",
+        "method": 4,
+        "lower": [
+            40,
+            85,
+            90
+        ],
+        "upper": [
+            80,
+            125,
+            135
+        ],
+        "count": 300,
+        "roi": "FLTierFallback6",
+        "roi_offset": [
+            196,
+            0,
+            30,
+            0
+        ],
+        "action": "DoNothing",
+        "next": [
+            "FLClickSkipConfirm"
         ],
         "timeout": 3000
     }
