@@ -62,18 +62,19 @@
         "timeout": 6000
     },
     "StudioOnPage": {
-        "description": "录音室练习页识别（OCR 标题「录音室」）→ 转去一键领取。",
+        "description": "录音室页识别（OCR 标题「录音室」）。⚠️ ro i必须够宽：首次进入的说明页标题在 x≈568~710（实测 box=[568,35,142,32]），旧 roi 只到 x=520 认不出，会把点击成功误判成没进页面，进而触发 on_error 循环。",
         "recognition": "OCR",
         "expected": "录音室|錄音室",
         "roi": [
-            180,
-            15,
-            340,
-            60
+            150,
+            10,
+            620,
+            70
         ],
         "action": "DoNothing",
         "next": [
-            "StudioClaim"
+            "StudioClaim",
+            "StudioTutorialNext"
         ],
         "timeout": 8000
     },
@@ -179,5 +180,46 @@
         ],
         "timeout": 6000,
         "post_delay": 2500
+    },
+    "StudioTutorialClose": {
+        "description": "【说明页·关闭兜底】点左下「关闭」(474,639) 退出说明页。⚠️ 同样受 Maa 点击在该层不稳定的影响；失败即 StudioDone 收尾，不重试不进循环。",
+        "recognition": "OCR",
+        "expected": "关闭|關閉",
+        "roi": [
+            420,
+            600,
+            180,
+            90
+        ],
+        "action": "Click",
+        "next": [
+            "StudioClaim"
+        ],
+        "on_error": [
+            "StudioDone"
+        ],
+        "timeout": 5000,
+        "max_hit": 1,
+        "post_delay": 1500
+    },
+    "StudioTutorialNext": {
+        "description": "【首次进入多页说明·推进】新账号首次进录音室弹多页说明（第1页标题「录音室练习」+「下一步」745,636）。点「下一步」推进。⚠️ 实测：Maa 的点击在这个说明覆盖层上不稳定（同一坐标手动 tap 有效、Maa Click 可能无响应），且 max_hit 对自循环 next 不生效（曾连点 267 次仍循环）。因此这里不做自循环：点一次 → 若已到正常页走 StudioClaim，否则退给 StudioTutorialClose 尝试关闭，再不行 StudioDone 收尾，绝不死循环。",
+        "recognition": "OCR",
+        "expected": "下一步|下一步",
+        "roi": [
+            700,
+            610,
+            180,
+            90
+        ],
+        "action": "Click",
+        "next": [
+            "StudioClaim",
+            "StudioTutorialClose"
+        ],
+        "on_error": [
+            "StudioTutorialClose"
+        ],
+        "post_delay": 1300
     }
 }
