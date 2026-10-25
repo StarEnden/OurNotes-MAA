@@ -1,6 +1,6 @@
 {
   "files": {
-    "interface.json": 1792859497806,
+    "interface.json": 1792901229699,
     "logo.ico": 1791041365247,
     "resource/announcement/使用须知.md": 1792248524538,
     "resource/image/claim_daily_btn.png": 1791036711562,
@@ -47,10 +47,10 @@
     "resource/pipeline/missions.json": 1791708558212,
     "resource/pipeline/ournotes.json": 1791708311590,
     "resource/pipeline/pass_pt.json": 1792857090386,
-    "resource/pipeline/recruit.json": 1792855358481,
+    "resource/pipeline/recruit.json": 1792901201765,
     "resource/pipeline/studio.json": 1792857007245
   },
-  "generated_at": 1792859764803,
+  "generated_at": 1792901229852,
   "generator": "ournotes-maa tools/resource_check.py",
-  "version": "0.1.11"
+  "version": "0.1.12"
 }
