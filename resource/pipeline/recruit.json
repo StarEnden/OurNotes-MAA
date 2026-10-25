@@ -177,6 +177,8 @@
         ],
         "action": "Click",
         "next": [
+            "RecruitBandRankOK",
+            "RecruitTWGLevelReward",
             "RecruitBonusOK",
             "RecruitSettleSnap",
             "RecruitResultTop"
@@ -201,6 +203,8 @@
             660
         ],
         "next": [
+            "RecruitBandRankOK",
+            "RecruitTWGLevelReward",
             "RecruitSettleSnap",
             "RecruitResultTop"
         ],
@@ -259,15 +263,99 @@
         "next": [],
         "timeout": 10000
     },
+    "RecruitSettleSRColor": {
+        "description": "【结算页稀有度·SR（颜色）】单抽结算页稀有度字形区固定在 [596,471,86,70]，SR 是金色艺术字。实测该区域金色像素：SR=489、R=0、SSR=0，分离干净，比 OCR 稳，优先使用。",
+        "recognition": "ColorMatch",
+        "roi": [
+            596,
+            471,
+            86,
+            70
+        ],
+        "method": 4,
+        "lower": [
+            190,
+            140,
+            50
+        ],
+        "upper": [
+            255,
+            225,
+            180
+        ],
+        "count": 300,
+        "action": "DoNothing",
+        "next": [
+            "RecruitTellSR",
+            "RecruitResultTop"
+        ],
+        "timeout": 3000
+    },
+    "RecruitSettleRColor": {
+        "description": "【结算页稀有度·R（颜色）】R 是蓝色艺术字。实测星钻蓝色像素：R=646、SSR=294，故用 count 400 把 R 与 SSR 分开（本节点在前，先匹配高计数）。",
+        "recognition": "ColorMatch",
+        "roi": [
+            596,
+            471,
+            86,
+            70
+        ],
+        "method": 4,
+        "lower": [
+            0,
+            90,
+            190
+        ],
+        "upper": [
+            170,
+            255,
+            255
+        ],
+        "count": 600,
+        "action": "DoNothing",
+        "next": [
+            "RecruitTellR",
+            "RecruitResultTop"
+        ],
+        "timeout": 3000
+    },
+    "RecruitSettleSSRColor": {
+        "description": "【结算页稀有度·SSR（颜色）】SSR 同为蓝色系但像素明显偏少（实测 294）。放在 R(count 400) 之后做兜底，count 100 足以命中而不会抢走 R。",
+        "recognition": "ColorMatch",
+        "roi": [
+            596,
+            471,
+            86,
+            70
+        ],
+        "method": 4,
+        "lower": [
+            0,
+            90,
+            190
+        ],
+        "upper": [
+            170,
+            255,
+            255
+        ],
+        "count": 150,
+        "action": "DoNothing",
+        "next": [
+            "RecruitTellSSR",
+            "RecruitResultTop"
+        ],
+        "timeout": 3000
+    },
     "RecruitSettleSSR": {
-        "description": "【结算页稀有度·SSR】结算页每张卡底部都有大号稀有度字（十连是一行 10 张，单抽 1 张居中）。ROI 覆盖整行（x 60~1220, y 455~605），配合候选顺序 SSR→SR→BD→R，十连时自动报出**最高**稀有度。⚠️ 正则按整词匹配（^…$），卡面美术里的零散字母不会误命中。实测单抽 R 的 box=[617,487,45,54]。",
+        "description": "【结算页稀有度·SSR】结算页布局至少三种：横排十连、竖卡居中、竖条卡面，稀有度 y 从 480 到 700 都有。固定 ROI 反复漏判，改为**全屏 ROI**（Maa 全屏 OCR 实测能读出 R 与 SSR）。正则整词匹配，只认独立的 R/SR/SSR/BD，不会命中 RANK/招募等词。",
         "recognition": "OCR",
         "expected": "^SS[R/P]$|^SSR$",
         "roi": [
-            60,
-            455,
-            1160,
-            150
+            0,
+            0,
+            0,
+            0
         ],
         "action": "DoNothing",
         "next": [
@@ -291,14 +379,14 @@
         "timeout": 3000
     },
     "RecruitSettleSR": {
-        "description": "【结算页稀有度·SR】结算页每张卡底部都有大号稀有度字（十连是一行 10 张，单抽 1 张居中）。ROI 覆盖整行（x 60~1220, y 455~605），配合候选顺序 SSR→SR→BD→R，十连时自动报出**最高**稀有度。⚠️ 正则按整词匹配（^…$），卡面美术里的零散字母不会误命中。实测单抽 R 的 box=[617,487,45,54]。",
+        "description": "【结算页稀有度·SR】结算页布局至少三种：横排十连、竖卡居中、竖条卡面，稀有度 y 从 480 到 700 都有。固定 ROI 反复漏判，改为**全屏 ROI**（Maa 全屏 OCR 实测能读出 R 与 SSR）。正则整词匹配，只认独立的 R/SR/SSR/BD，不会命中 RANK/招募等词。",
         "recognition": "OCR",
         "expected": "^S[R/P]$",
         "roi": [
-            60,
-            455,
-            1160,
-            150
+            0,
+            0,
+            0,
+            0
         ],
         "action": "DoNothing",
         "next": [
@@ -322,14 +410,14 @@
         "timeout": 3000
     },
     "RecruitSettleBD": {
-        "description": "【结算页稀有度·BD】结算页每张卡底部都有大号稀有度字（十连是一行 10 张，单抽 1 张居中）。ROI 覆盖整行（x 60~1220, y 455~605），配合候选顺序 SSR→SR→BD→R，十连时自动报出**最高**稀有度。⚠️ 正则按整词匹配（^…$），卡面美术里的零散字母不会误命中。实测单抽 R 的 box=[617,487,45,54]。",
+        "description": "【结算页稀有度·BD】结算页布局至少三种：横排十连、竖卡居中、竖条卡面，稀有度 y 从 480 到 700 都有。固定 ROI 反复漏判，改为**全屏 ROI**（Maa 全屏 OCR 实测能读出 R 与 SSR）。正则整词匹配，只认独立的 R/SR/SSR/BD，不会命中 RANK/招募等词。",
         "recognition": "OCR",
         "expected": "^BD$",
         "roi": [
-            60,
-            455,
-            1160,
-            150
+            0,
+            0,
+            0,
+            0
         ],
         "action": "DoNothing",
         "next": [
@@ -353,14 +441,14 @@
         "timeout": 3000
     },
     "RecruitSettleR": {
-        "description": "【结算页稀有度·R】结算页每张卡底部都有大号稀有度字（十连是一行 10 张，单抽 1 张居中）。ROI 覆盖整行（x 60~1220, y 455~605），配合候选顺序 SSR→SR→BD→R，十连时自动报出**最高**稀有度。⚠️ 正则按整词匹配（^…$），卡面美术里的零散字母不会误命中。实测单抽 R 的 box=[617,487,45,54]。",
+        "description": "【结算页稀有度·R】结算页布局至少三种：横排十连、竖卡居中、竖条卡面，稀有度 y 从 480 到 700 都有。固定 ROI 反复漏判，改为**全屏 ROI**（Maa 全屏 OCR 实测能读出 R 与 SSR）。正则整词匹配，只认独立的 R/SR/SSR/BD，不会命中 RANK/招募等词。",
         "recognition": "OCR",
         "expected": "^R$",
         "roi": [
-            60,
-            455,
-            1160,
-            150
+            0,
+            0,
+            0,
+            0
         ],
         "action": "DoNothing",
         "next": [
@@ -397,6 +485,9 @@
         "filename": "抽卡结果_结算页",
         "format": "png",
         "next": [
+            "RecruitSettleSRColor",
+            "RecruitSettleRColor",
+            "RecruitSettleSSRColor",
             "RecruitSettleSSR",
             "RecruitSettleSR",
             "RecruitSettleBD",
@@ -419,5 +510,58 @@
             "RecruitResultTop"
         ],
         "timeout": 3000
+    },
+    "RecruitBandRankOK": {
+        "description": "【等级提升弹窗（同一模板两种）】①乐队 RANK UP（抽到新卡→乐队综合力涨，跨档弹窗）②T.G.W CARD RANK UP（消耗星钻→积分涨，跨档弹窗）。两者版式相同：顶部 RANK UP、底部居中 OK。实测：乐队弹窗 OK box=[621,649,40,26]；T.G.W 弹窗 OK box=[621,639,40,26]，都在固定矩形 [600,640,80,40] 内。不处理会挡住招募页，导致「招募1次」找不到。",
+        "recognition": "OCR",
+        "expected": "RANK ?UP|乐队RANK|樂隊RANK",
+        "roi": [
+            450,
+            80,
+            400,
+            360
+        ],
+        "action": "Click",
+        "target": [
+            600,
+            640,
+            80,
+            40
+        ],
+        "next": [
+            "RecruitTWGLevelReward",
+            "RecruitSettleSnap",
+            "RecruitBonusOK",
+            "RecruitResultTop"
+        ],
+        "timeout": 5000,
+        "max_hit": 2,
+        "post_delay": 1500
+    },
+    "RecruitTWGLevelReward": {
+        "description": "【T.G.W CARD 升级奖励弹窗】消耗星钻会涨 T.G.W 积分，升级后弹「获得T.G.W CARD升级奖励」（发 1 件道具 + 200）。实测标题 box=[356,115,568,41]，OK box=[620,645,41,27]。识别只用中文「升级奖励」（英文 T.G.W 带点号在正则里容易踩转义坑）。点击用固定矩形 [600,640,80,40]。",
+        "recognition": "OCR",
+        "expected": "升级奖励|升級獎勵",
+        "roi": [
+            300,
+            90,
+            700,
+            80
+        ],
+        "action": "Click",
+        "target": [
+            600,
+            640,
+            80,
+            40
+        ],
+        "next": [
+            "RecruitSettleSnap",
+            "RecruitResultTop",
+            "RecruitBandRankOK"
+        ],
+        "timeout": 5000,
+        "max_hit": 2,
+        "post_delay": 1500
     }
 }
