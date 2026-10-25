@@ -93,52 +93,14 @@
         ]
     },
     "RecruitFreeBtn": {
-        "description": "【免费单抽按钮·只识别】只判断「招募1次」是否存在，不做点击。点击交给 RecruitPrice200 → RecruitFreeBtnClick，确保点之前价格已确认为 200。",
+        "description": "【免费招募按钮】每日免费招募的按钮，文字是「免费」。点它进入确认框，随后由 RecruitZeroGate 校验「消耗 0 个星钻」——不满足就取消退出，绝不消耗资源。",
         "recognition": "OCR",
-        "expected": "^招募1次$",
+        "expected": "免费",
         "roi": [
-            840,
-            520,
-            220,
-            100
-        ],
-        "action": "DoNothing",
-        "next": [
-            "RecruitPrice200"
-        ],
-        "timeout": 8000
-    },
-    "RecruitPrice200": {
-        "description": "【价格闸门】「招募1次」下方的价格必须是 200（单抽）。若是 1,200 / 2,000（十连），本节点失败，链路立即停止，绝不点击。",
-        "recognition": "OCR",
-        "expected": "^200$",
-        "roi": [
-            935,
-            575,
-            90,
-            35
-        ],
-        "action": "DoNothing",
-        "next": [
-            "RecruitFreeBtnClick"
-        ],
-        "timeout": 3000
-    },
-    "RecruitFreeBtnClick": {
-        "description": "【点击「招募1次」】target 实测：点 (900~940, 552~572) 弹出「将消耗200个星钻，进行1次招募」。只在 RecruitPrice200 通过后执行。",
-        "recognition": "OCR",
-        "expected": "^招募1次$",
-        "roi": [
-            840,
-            520,
-            220,
-            100
-        ],
-        "target": [
-            900,
-            552,
-            40,
-            20
+            850,
+            530,
+            180,
+            90
         ],
         "action": "Click",
         "next": [
@@ -148,7 +110,7 @@
         "timeout": 8000
     },
     "RecruitZeroGate": {
-        "description": "【强制零消耗闸门·防误真抽】确认框正文必须出现「消耗 0 个星钻」（兼容繁体「0個星鑽」、以及 OCR 把数字/量词读散的写法）。**只有命中才允许点 OK**；不命中就由同级 RecruitCancel 点「取消」退出。这是防止把免费抽误点成付费真抽的最后一道闸 —— 宁可少领一次，绝不多花一颗星钻。",
+        "description": "【零消耗硬闸门】确认框必须出现「消耗 0 个星钻」。任何需要消耗星钻的确认框（例如 200 / 1,200）都不匹配，链路随即走 RecruitCancel 退出。",
         "recognition": "OCR",
         "expected": "消耗\\s*0\\s*[个個]",
         "roi": [
@@ -160,9 +122,6 @@
         "action": "DoNothing",
         "next": [
             "RecruitConfirmOK"
-        ],
-        "on_error": [
-            "RecruitCancel"
         ],
         "timeout": 5000
     },
@@ -183,22 +142,6 @@
         ],
         "timeout": 6000,
         "post_delay": 2000
-    },
-    "RecruitCost200Gate": {
-        "description": "【金额硬闸门】确认框里必须出现「将消耗200个星钻」。若是十连（1,200 / 2,000）或任何其它金额，本节点失败，链路停止，绝不点 OK。",
-        "recognition": "OCR",
-        "expected": "将消耗200个星钻",
-        "roi": [
-            330,
-            250,
-            660,
-            400
-        ],
-        "action": "DoNothing",
-        "next": [
-            "RecruitConfirmOK"
-        ],
-        "timeout": 5000
     },
     "RecruitConfirmOK": {
         "description": "【确认招募弹窗】标题「确认招募」，正文「将消耗0个星钻，进行1次招募。确定要招募吗？」底部左「取消」右「OK」→ 只认 OK（不认「取消」）。",
@@ -615,5 +558,53 @@
         "timeout": 5000,
         "max_hit": 2,
         "post_delay": 1500
+    },
+    "RecruitPrice200": {
+        "description": "【备用·价格校验】仅供手动调试使用，默认链路不引用。校验「招募1次」按钮下方的价格是 200；读到 1,200 / 2,000 说明当前是十连按钮，应停止。",
+        "recognition": "OCR",
+        "expected": "^200$",
+        "roi": [
+            935,
+            575,
+            90,
+            35
+        ],
+        "action": "DoNothing",
+        "next": [],
+        "timeout": 3000
+    },
+    "RecruitFreeBtnClick": {
+        "description": "【备用·点击招募1次】仅供手动调试使用，默认链路不引用。点之前应先过 RecruitPrice200。target 实测弹出「将消耗200个星钻，进行1次招募」。",
+        "recognition": "OCR",
+        "expected": "^招募1次$",
+        "roi": [
+            840,
+            520,
+            220,
+            100
+        ],
+        "target": [
+            900,
+            552,
+            40,
+            20
+        ],
+        "action": "Click",
+        "next": [],
+        "timeout": 8000
+    },
+    "RecruitCost200Gate": {
+        "description": "【备用·金额校验】仅供手动调试使用，默认链路不引用。确认框必须出现「将消耗200个星钻」；十连（1,200 / 2,000）不匹配，用于防止误确认。",
+        "recognition": "OCR",
+        "expected": "将消耗200个星钻",
+        "roi": [
+            330,
+            250,
+            660,
+            400
+        ],
+        "action": "DoNothing",
+        "next": [],
+        "timeout": 5000
     }
 }
