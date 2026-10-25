@@ -91,25 +91,59 @@
         ]
     },
     "RecruitFreeBtn": {
-        "description": "【卡池页·免费按钮】右下那组「每日23:00重置！/ 免费 / 1次」（实测「免费」box=[878,549,82,26]@720p）。用掉后同位置文字变成「招募1次」→ 不会再命中，天然幂等。⚠️ 点完**绝不直接点 OK**：必须先进 RecruitZeroGate 校验确认框写着「消耗 0 个星钻」，否则同级落到 RecruitCancel 点「取消」。",
+        "description": "【免费单抽按钮·只识别】只判断「招募1次」是否存在，不做点击。点击交给 RecruitPrice200 → RecruitFreeBtnClick，确保点之前价格已确认为 200。",
         "recognition": "OCR",
-        "expected": "免费",
+        "expected": "^招募1次$",
         "roi": [
-            850,
-            530,
-            180,
-            90
+            840,
+            520,
+            220,
+            100
+        ],
+        "action": "DoNothing",
+        "next": [
+            "RecruitPrice200"
+        ],
+        "timeout": 8000
+    },
+    "RecruitPrice200": {
+        "description": "【价格闸门】「招募1次」下方的价格必须是 200（单抽）。若是 1,200 / 2,000（十连），本节点失败，链路立即停止，绝不点击。",
+        "recognition": "OCR",
+        "expected": "^200$",
+        "roi": [
+            935,
+            575,
+            90,
+            35
+        ],
+        "action": "DoNothing",
+        "next": [
+            "RecruitFreeBtnClick"
+        ],
+        "timeout": 3000
+    },
+    "RecruitFreeBtnClick": {
+        "description": "【点击「招募1次」】target 实测：点 (900~940, 552~572) 弹出「将消耗200个星钻，进行1次招募」。只在 RecruitPrice200 通过后执行。",
+        "recognition": "OCR",
+        "expected": "^招募1次$",
+        "roi": [
+            840,
+            520,
+            220,
+            100
+        ],
+        "target": [
+            900,
+            552,
+            40,
+            20
         ],
         "action": "Click",
         "next": [
             "RecruitZeroGate",
             "RecruitCancel"
         ],
-        "on_error": [
-            "RecruitClickHome"
-        ],
-        "timeout": 8000,
-        "post_delay": 2500
+        "timeout": 8000
     },
     "RecruitZeroGate": {
         "description": "【强制零消耗闸门·防误真抽】确认框正文必须出现「消耗 0 个星钻」（兼容繁体「0個星鑽」、以及 OCR 把数字/量词读散的写法）。**只有命中才允许点 OK**；不命中就由同级 RecruitCancel 点「取消」退出。这是防止把免费抽误点成付费真抽的最后一道闸 —— 宁可少领一次，绝不多花一颗星钻。",
@@ -147,6 +181,22 @@
         ],
         "timeout": 6000,
         "post_delay": 2000
+    },
+    "RecruitCost200Gate": {
+        "description": "【金额硬闸门】确认框里必须出现「将消耗200个星钻」。若是十连（1,200 / 2,000）或任何其它金额，本节点失败，链路停止，绝不点 OK。",
+        "recognition": "OCR",
+        "expected": "将消耗200个星钻",
+        "roi": [
+            330,
+            250,
+            660,
+            400
+        ],
+        "action": "DoNothing",
+        "next": [
+            "RecruitConfirmOK"
+        ],
+        "timeout": 5000
     },
     "RecruitConfirmOK": {
         "description": "【确认招募弹窗】标题「确认招募」，正文「将消耗0个星钻，进行1次招募。确定要招募吗？」底部左「取消」右「OK」→ 只认 OK（不认「取消」）。",
