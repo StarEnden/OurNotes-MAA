@@ -54,20 +54,20 @@
         "post_delay": 3000
     },
     "RecruitPoolScan": {
-        "description": "【卡池红点扫描】左侧列表里带红点的池子才能免费抽。⚠️ 未选中池子的红点是半透明的（实测 rgb(251,165,164) S≈88），选中池子的才鲜红（rgb(241,48,48) S≈204），所以阈值要放宽到 S≥60、V≥190。命中即点该池；扫不到红点说明今日免费抽全用完 → 回主界面。roi 只框左侧列表右缘（x 200~390），避开车卡美术和右侧价格文字。",
+        "description": "【卡池红点扫描】左侧列表里带红点的池子才能免费抽。⚠️ 不能用宽色域：HSV 宽范围会把卡面 artwork 的红色一起算进去（实测 count=4918、box 铺满整个 ROI，直接点错池）。改用 RGB 精确色 rgb(225~255, 35~70, 35~70)：实测只命中红点本身（204 像素，x 217~232 / y 557~572），artwork 一个都不带。count=80 留余量；timeout 15s 覆盖回到列表时的加载动画（8s 实测会漏）。命中即点该池（target_offset -55,40 落在卡池卡上）；扫不到才回主界面。",
         "recognition": "ColorMatch",
-        "method": 40,
+        "method": 4,
         "lower": [
-            0,
-            60,
-            190
+            225,
+            35,
+            35
         ],
         "upper": [
-            15,
             255,
-            255
+            70,
+            70
         ],
-        "count": 150,
+        "count": 80,
         "roi": [
             200,
             150,
@@ -76,12 +76,13 @@
         ],
         "action": "Click",
         "next": [
-            "RecruitFreeBtn"
+            "RecruitFreeBtn",
+            "RecruitClickHome"
         ],
         "on_error": [
             "RecruitClickHome"
         ],
-        "timeout": 8000,
+        "timeout": 15000,
         "post_delay": 3000,
         "max_hit": 4,
         "target_offset": [
@@ -166,7 +167,7 @@
         "post_delay": 2500
     },
     "RecruitSkipAnim": {
-        "description": "【抽卡演出·跳过】演出页右上角「SKIP」（实测 1080p ≈(1762,74) → 720p ≈(1175,49)）。演出也可能自己播完，所以它是可选的：命中就点，没命中就等结果页。",
+        "description": "【跳过抽卡动画】点右上 SKIP。next 三个候选：①还能再点 SKIP ②有赠品弹窗就点 OK ③都没有说明已经到结算页 → 直接 RecruitResultTop。⚠️ 不要只写两个候选：没赠品时两个都失败会让父节点报错整任务 4000（实测停在结算页不动）。",
         "recognition": "OCR",
         "expected": "SKIP|Skip|跳过|跳過",
         "roi": [
@@ -178,7 +179,8 @@
         "action": "Click",
         "next": [
             "RecruitSkipAnim",
-            "RecruitBonusOK"
+            "RecruitBonusOK",
+            "RecruitResultTop"
         ],
         "max_hit": 4,
         "timeout": 6000,
@@ -209,7 +211,7 @@
         ]
     },
     "RecruitResultTop": {
-        "description": "【招募结算页】标题「招募结算」，右下两按钮：左「招募TOP」右「再次招募」。只点**招募TOP**（回卡池页），绝不能点「再次招募」（会再抽一次，免费次数已用完就是付费）。",
+        "description": "【结算页】点「招募TOP」回卡池列表继续扫红点；列表里没有红点了（都抽完）→ 直接 RecruitClickHome 回主界面。⚠️ 收尾必须写成 next 的第二候选：Maa 在 next 候选失败时不走 on_error，只写单个候选会整任务报错。",
         "recognition": "OCR",
         "expected": "招募TOP",
         "roi": [
@@ -220,7 +222,8 @@
         ],
         "action": "Click",
         "next": [
-            "RecruitPoolScan"
+            "RecruitPoolScan",
+            "RecruitClickHome"
         ],
         "timeout": 12000,
         "post_delay": 2500
