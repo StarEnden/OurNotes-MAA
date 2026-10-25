@@ -160,14 +160,17 @@
         ],
         "action": "Click",
         "next": [
-            "RecruitSkipAnim",
-            "RecruitResultTop"
+            "RecruitRaritySSR",
+            "RecruitRaritySR",
+            "RecruitRarityBD",
+            "RecruitRarityR",
+            "RecruitSkipAnim"
         ],
         "timeout": 8000,
         "post_delay": 2500
     },
     "RecruitSkipAnim": {
-        "description": "【跳过抽卡动画】点右上 SKIP。next 三个候选：①还能再点 SKIP ②有赠品弹窗就点 OK ③都没有说明已经到结算页 → 直接 RecruitResultTop。⚠️ 不要只写两个候选：没赠品时两个都失败会让父节点报错整任务 4000（实测停在结算页不动）。",
+        "description": "【SKIP①·跳过抽卡动画】点一次右上 SKIP，露出卡面；随后交给稀有度识别（SSR/SR/BD/R），识别不到就直接关卡面。",
         "recognition": "OCR",
         "expected": "SKIP|Skip|跳过|跳過",
         "roi": [
@@ -178,11 +181,13 @@
         ],
         "action": "Click",
         "next": [
-            "RecruitSkipAnim",
-            "RecruitBonusOK",
-            "RecruitResultTop"
+            "RecruitRaritySSR",
+            "RecruitRaritySR",
+            "RecruitRarityBD",
+            "RecruitRarityR",
+            "RecruitCardSkip"
         ],
-        "max_hit": 4,
+        "max_hit": 1,
         "timeout": 6000,
         "post_delay": 2000
     },
@@ -258,5 +263,226 @@
         "action": "DoNothing",
         "next": [],
         "timeout": 10000
+    },
+    "RecruitRaritySSR": {
+        "description": "【抽卡稀有度·SSR】卡面左下角菱形里的稀有度。⚠️ ROI 必须给足上下文：[60,470,300,200] 实测能读到 SR（box=[150,539,58,44]），但更小的 ROI 只读到 NEW、全屏则会读成 SP，所以正则写成 S[RP]。命中后先截图，再通知，再关卡面。",
+        "recognition": "OCR",
+        "expected": "^SS[R/P]$|^SSR$",
+        "roi": [
+            60,
+            470,
+            300,
+            200
+        ],
+        "action": "DoNothing",
+        "next": [
+            "RecruitSnapSSR",
+            "RecruitCardSkip"
+        ],
+        "timeout": 3000
+    },
+    "RecruitNotifySSR": {
+        "description": "【抽卡结果通知·SSR】调 MFAAvalonia 内置 SystemNotificationAction：写 GUI 日志 + 弹系统通知（仅 GUI 模式存在；CLI 下失败会自动跳到下一步）。",
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "SystemNotificationAction",
+        "custom_action_param": "{\"title\": \"抽卡结果\", \"message\": \"SSR！｜截图：debug/screencap/抽卡结果_SSR.png\"}",
+        "next": [
+            "RecruitCardSkip"
+        ],
+        "timeout": 3000,
+        "on_error": [
+            "RecruitCardSkip"
+        ]
+    },
+    "RecruitRaritySR": {
+        "description": "【抽卡稀有度·SR】卡面左下角菱形里的稀有度。⚠️ ROI 必须给足上下文：[60,470,300,200] 实测能读到 SR（box=[150,539,58,44]），但更小的 ROI 只读到 NEW、全屏则会读成 SP，所以正则写成 S[RP]。命中后先截图，再通知，再关卡面。",
+        "recognition": "OCR",
+        "expected": "^S[R/P]$",
+        "roi": [
+            60,
+            470,
+            300,
+            200
+        ],
+        "action": "DoNothing",
+        "next": [
+            "RecruitSnapSR",
+            "RecruitCardSkip"
+        ],
+        "timeout": 3000
+    },
+    "RecruitNotifySR": {
+        "description": "【抽卡结果通知·SR】调 MFAAvalonia 内置 SystemNotificationAction：写 GUI 日志 + 弹系统通知（仅 GUI 模式存在；CLI 下失败会自动跳到下一步）。",
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "SystemNotificationAction",
+        "custom_action_param": "{\"title\": \"抽卡结果\", \"message\": \"SR｜截图：debug/screencap/抽卡结果_SR.png\"}",
+        "next": [
+            "RecruitCardSkip"
+        ],
+        "timeout": 3000,
+        "on_error": [
+            "RecruitCardSkip"
+        ]
+    },
+    "RecruitRarityBD": {
+        "description": "【抽卡稀有度·BD】卡面左下角菱形里的稀有度。⚠️ ROI 必须给足上下文：[60,470,300,200] 实测能读到 SR（box=[150,539,58,44]），但更小的 ROI 只读到 NEW、全屏则会读成 SP，所以正则写成 S[RP]。命中后先截图，再通知，再关卡面。",
+        "recognition": "OCR",
+        "expected": "^BD$",
+        "roi": [
+            60,
+            470,
+            300,
+            200
+        ],
+        "action": "DoNothing",
+        "next": [
+            "RecruitSnapBD",
+            "RecruitCardSkip"
+        ],
+        "timeout": 3000
+    },
+    "RecruitNotifyBD": {
+        "description": "【抽卡结果通知·BD】调 MFAAvalonia 内置 SystemNotificationAction：写 GUI 日志 + 弹系统通知（仅 GUI 模式存在；CLI 下失败会自动跳到下一步）。",
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "SystemNotificationAction",
+        "custom_action_param": "{\"title\": \"抽卡结果\", \"message\": \"BD｜截图：debug/screencap/抽卡结果_BD.png\"}",
+        "next": [
+            "RecruitCardSkip"
+        ],
+        "timeout": 3000,
+        "on_error": [
+            "RecruitCardSkip"
+        ]
+    },
+    "RecruitRarityR": {
+        "description": "【抽卡稀有度·R】卡面左下角菱形里的稀有度。⚠️ ROI 必须给足上下文：[60,470,300,200] 实测能读到 SR（box=[150,539,58,44]），但更小的 ROI 只读到 NEW、全屏则会读成 SP，所以正则写成 S[RP]。命中后先截图，再通知，再关卡面。",
+        "recognition": "OCR",
+        "expected": "^R$",
+        "roi": [
+            60,
+            470,
+            300,
+            200
+        ],
+        "action": "DoNothing",
+        "next": [
+            "RecruitSnapR",
+            "RecruitCardSkip"
+        ],
+        "timeout": 3000
+    },
+    "RecruitNotifyR": {
+        "description": "【抽卡结果通知·R】调 MFAAvalonia 内置 SystemNotificationAction：写 GUI 日志 + 弹系统通知（仅 GUI 模式存在；CLI 下失败会自动跳到下一步）。",
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "SystemNotificationAction",
+        "custom_action_param": "{\"title\": \"抽卡结果\", \"message\": \"R｜截图：debug/screencap/抽卡结果_R.png\"}",
+        "next": [
+            "RecruitCardSkip"
+        ],
+        "timeout": 3000,
+        "on_error": [
+            "RecruitCardSkip"
+        ]
+    },
+    "RecruitSnapSSR": {
+        "description": "【抽卡截图·SSR】Screencap 原生动作。⚠️ 识别不能写 DirectHit：没有识别框时 Actuator 会报 cached_image is empty，必须给真实识别（卡面右上角有 SKIP）才会缓存画面。存到 log_dir/screencap/ 供事后查看卡面。",
+        "recognition": "OCR",
+        "action": "Screencap",
+        "filename": "抽卡结果_SSR",
+        "format": "png",
+        "next": [
+            "RecruitNotifySSR",
+            "RecruitCardSkip"
+        ],
+        "timeout": 3000,
+        "expected": "SKIP|Skip|跳过|跳過",
+        "roi": [
+            1100,
+            5,
+            180,
+            90
+        ]
+    },
+    "RecruitSnapSR": {
+        "description": "【抽卡截图·SR】Screencap 原生动作。⚠️ 识别不能写 DirectHit：没有识别框时 Actuator 会报 cached_image is empty，必须给真实识别（卡面右上角有 SKIP）才会缓存画面。存到 log_dir/screencap/ 供事后查看卡面。",
+        "recognition": "OCR",
+        "action": "Screencap",
+        "filename": "抽卡结果_SR",
+        "format": "png",
+        "next": [
+            "RecruitNotifySR",
+            "RecruitCardSkip"
+        ],
+        "timeout": 3000,
+        "expected": "SKIP|Skip|跳过|跳過",
+        "roi": [
+            1100,
+            5,
+            180,
+            90
+        ]
+    },
+    "RecruitSnapBD": {
+        "description": "【抽卡截图·BD】Screencap 原生动作。⚠️ 识别不能写 DirectHit：没有识别框时 Actuator 会报 cached_image is empty，必须给真实识别（卡面右上角有 SKIP）才会缓存画面。存到 log_dir/screencap/ 供事后查看卡面。",
+        "recognition": "OCR",
+        "action": "Screencap",
+        "filename": "抽卡结果_BD",
+        "format": "png",
+        "next": [
+            "RecruitNotifyBD",
+            "RecruitCardSkip"
+        ],
+        "timeout": 3000,
+        "expected": "SKIP|Skip|跳过|跳過",
+        "roi": [
+            1100,
+            5,
+            180,
+            90
+        ]
+    },
+    "RecruitSnapR": {
+        "description": "【抽卡截图·R】Screencap 原生动作。⚠️ 识别不能写 DirectHit：没有识别框时 Actuator 会报 cached_image is empty，必须给真实识别（卡面右上角有 SKIP）才会缓存画面。存到 log_dir/screencap/ 供事后查看卡面。",
+        "recognition": "OCR",
+        "action": "Screencap",
+        "filename": "抽卡结果_R",
+        "format": "png",
+        "next": [
+            "RecruitNotifyR",
+            "RecruitCardSkip"
+        ],
+        "timeout": 3000,
+        "expected": "SKIP|Skip|跳过|跳過",
+        "roi": [
+            1100,
+            5,
+            180,
+            90
+        ]
+    },
+    "RecruitCardSkip": {
+        "description": "【关掉卡面】看完稀有度后再点一次 SKIP，回到卡池列表/结算页。next 按 结算页→卡池列表→主界面 依次尝试。",
+        "recognition": "OCR",
+        "expected": "SKIP|Skip|跳过|跳過",
+        "roi": [
+            1100,
+            5,
+            180,
+            90
+        ],
+        "action": "Click",
+        "next": [
+            "RecruitBonusOK",
+            "RecruitResultTop",
+            "RecruitPoolScan",
+            "RecruitClickHome"
+        ],
+        "timeout": 8000,
+        "max_hit": 2,
+        "post_delay": 1500
     }
 }
