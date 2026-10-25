@@ -47,10 +47,10 @@
     "resource/pipeline/missions.json": 1791708558212,
     "resource/pipeline/ournotes.json": 1791708311590,
     "resource/pipeline/pass_pt.json": 1792857090386,
-    "resource/pipeline/recruit.json": 1792908530686,
+    "resource/pipeline/recruit.json": 1792909472941,
     "resource/pipeline/studio.json": 1792857007245
   },
-  "generated_at": 1792909115614,
+  "generated_at": 1792909476933,
   "generator": "ournotes-maa tools/resource_check.py",
   "version": "0.1.12"
 }
