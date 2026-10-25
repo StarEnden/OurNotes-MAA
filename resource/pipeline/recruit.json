@@ -178,10 +178,7 @@
         "action": "Click",
         "next": [
             "RecruitBonusOK",
-            "RecruitSettleSSR",
-            "RecruitSettleSR",
-            "RecruitSettleBD",
-            "RecruitSettleR",
+            "RecruitSettleSnap",
             "RecruitResultTop"
         ],
         "max_hit": 1,
@@ -204,10 +201,7 @@
             660
         ],
         "next": [
-            "RecruitSettleSSR",
-            "RecruitSettleSR",
-            "RecruitSettleBD",
-            "RecruitSettleR",
+            "RecruitSettleSnap",
             "RecruitResultTop"
         ],
         "timeout": 8000,
@@ -277,36 +271,17 @@
         ],
         "action": "DoNothing",
         "next": [
-            "RecruitShotSSR",
-            "RecruitResultTop"
-        ],
-        "timeout": 5000
-    },
-    "RecruitShotSSR": {
-        "description": "【抽卡截图·SSR】原生 Screencap，存 log_dir/screencap/。识别必须用 OCR（DirectHit 会报 cached_image is empty）。",
-        "recognition": "OCR",
-        "expected": "招募结算|招募TOP",
-        "roi": [
-            560,
-            40,
-            200,
-            50
-        ],
-        "action": "Screencap",
-        "filename": "抽卡结果_SSR",
-        "format": "png",
-        "next": [
             "RecruitTellSSR",
             "RecruitResultTop"
         ],
-        "timeout": 3000
+        "timeout": 5000
     },
     "RecruitTellSSR": {
         "description": "【抽卡结果通知·SSR】MFAAvalonia 内置 SystemNotificationAction（仅 GUI 注册；CLI 下失败会自动走 on_error 收尾）。",
         "recognition": "DirectHit",
         "action": "Custom",
         "custom_action": "SystemNotificationAction",
-        "custom_action_param": "{\"title\": \"抽卡结果\", \"message\": \"SSR！｜截图：debug/screencap/抽卡结果_SSR.png\"}",
+        "custom_action_param": "{\"title\": \"抽卡结果\", \"message\": \"SSR！｜截图：debug/screencap/抽卡结果_结算页.png\"}",
         "next": [
             "RecruitResultTop"
         ],
@@ -327,36 +302,17 @@
         ],
         "action": "DoNothing",
         "next": [
-            "RecruitShotSR",
-            "RecruitResultTop"
-        ],
-        "timeout": 5000
-    },
-    "RecruitShotSR": {
-        "description": "【抽卡截图·SR】原生 Screencap，存 log_dir/screencap/。识别必须用 OCR（DirectHit 会报 cached_image is empty）。",
-        "recognition": "OCR",
-        "expected": "招募结算|招募TOP",
-        "roi": [
-            560,
-            40,
-            200,
-            50
-        ],
-        "action": "Screencap",
-        "filename": "抽卡结果_SR",
-        "format": "png",
-        "next": [
             "RecruitTellSR",
             "RecruitResultTop"
         ],
-        "timeout": 3000
+        "timeout": 5000
     },
     "RecruitTellSR": {
         "description": "【抽卡结果通知·SR】MFAAvalonia 内置 SystemNotificationAction（仅 GUI 注册；CLI 下失败会自动走 on_error 收尾）。",
         "recognition": "DirectHit",
         "action": "Custom",
         "custom_action": "SystemNotificationAction",
-        "custom_action_param": "{\"title\": \"抽卡结果\", \"message\": \"SR｜截图：debug/screencap/抽卡结果_SR.png\"}",
+        "custom_action_param": "{\"title\": \"抽卡结果\", \"message\": \"SR｜截图：debug/screencap/抽卡结果_结算页.png\"}",
         "next": [
             "RecruitResultTop"
         ],
@@ -377,36 +333,17 @@
         ],
         "action": "DoNothing",
         "next": [
-            "RecruitShotBD",
-            "RecruitResultTop"
-        ],
-        "timeout": 5000
-    },
-    "RecruitShotBD": {
-        "description": "【抽卡截图·BD】原生 Screencap，存 log_dir/screencap/。识别必须用 OCR（DirectHit 会报 cached_image is empty）。",
-        "recognition": "OCR",
-        "expected": "招募结算|招募TOP",
-        "roi": [
-            560,
-            40,
-            200,
-            50
-        ],
-        "action": "Screencap",
-        "filename": "抽卡结果_BD",
-        "format": "png",
-        "next": [
             "RecruitTellBD",
             "RecruitResultTop"
         ],
-        "timeout": 3000
+        "timeout": 5000
     },
     "RecruitTellBD": {
         "description": "【抽卡结果通知·BD】MFAAvalonia 内置 SystemNotificationAction（仅 GUI 注册；CLI 下失败会自动走 on_error 收尾）。",
         "recognition": "DirectHit",
         "action": "Custom",
         "custom_action": "SystemNotificationAction",
-        "custom_action_param": "{\"title\": \"抽卡结果\", \"message\": \"BD｜截图：debug/screencap/抽卡结果_BD.png\"}",
+        "custom_action_param": "{\"title\": \"抽卡结果\", \"message\": \"BD｜截图：debug/screencap/抽卡结果_结算页.png\"}",
         "next": [
             "RecruitResultTop"
         ],
@@ -427,13 +364,27 @@
         ],
         "action": "DoNothing",
         "next": [
-            "RecruitShotR",
+            "RecruitTellR",
             "RecruitResultTop"
         ],
         "timeout": 5000
     },
-    "RecruitShotR": {
-        "description": "【抽卡截图·R】原生 Screencap，存 log_dir/screencap/。识别必须用 OCR（DirectHit 会报 cached_image is empty）。",
+    "RecruitTellR": {
+        "description": "【抽卡结果通知·R】MFAAvalonia 内置 SystemNotificationAction（仅 GUI 注册；CLI 下失败会自动走 on_error 收尾）。",
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "SystemNotificationAction",
+        "custom_action_param": "{\"title\": \"抽卡结果\", \"message\": \"R｜截图：debug/screencap/抽卡结果_结算页.png\"}",
+        "next": [
+            "RecruitResultTop"
+        ],
+        "on_error": [
+            "RecruitResultTop"
+        ],
+        "timeout": 3000
+    },
+    "RecruitSettleSnap": {
+        "description": "【结算页截图】无条件把「招募结算」整页存一张，文件名固定 抽卡结果_结算页.png（每次覆盖，只保留最近一次）。⚠️ 识别必须用 OCR：DirectHit 没有缓存画面，Screencap 会报 cached_image is empty。",
         "recognition": "OCR",
         "expected": "招募结算|招募TOP",
         "roi": [
@@ -443,20 +394,24 @@
             50
         ],
         "action": "Screencap",
-        "filename": "抽卡结果_R",
+        "filename": "抽卡结果_结算页",
         "format": "png",
         "next": [
-            "RecruitTellR",
+            "RecruitSettleSSR",
+            "RecruitSettleSR",
+            "RecruitSettleBD",
+            "RecruitSettleR",
+            "RecruitTellUnknown",
             "RecruitResultTop"
         ],
-        "timeout": 3000
+        "timeout": 5000
     },
-    "RecruitTellR": {
-        "description": "【抽卡结果通知·R】MFAAvalonia 内置 SystemNotificationAction（仅 GUI 注册；CLI 下失败会自动走 on_error 收尾）。",
+    "RecruitTellUnknown": {
+        "description": "【稀有度未识别】结算页在但四档都没命中（可能是 OCR 读不准或新稀有度）。仍然通知并提示看截图，便于事后校准。",
         "recognition": "DirectHit",
         "action": "Custom",
         "custom_action": "SystemNotificationAction",
-        "custom_action_param": "{\"title\": \"抽卡结果\", \"message\": \"R｜截图：debug/screencap/抽卡结果_R.png\"}",
+        "custom_action_param": "{\"title\": \"抽卡结果\", \"message\": \"稀有度未识别｜截图：debug/screencap/抽卡结果_结算页.png\"}",
         "next": [
             "RecruitResultTop"
         ],
