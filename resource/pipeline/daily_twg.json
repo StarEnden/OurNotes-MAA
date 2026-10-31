@@ -394,9 +394,8 @@
         ]
     },
     "DClickEntry": {
-        "description": "T.G.W 面板入口 → 先领积分、再领每日奖励（2026-10-02 两条链合并，一次进商店全领完）。",
-        "recognition": "TemplateMatch",
-        "template": "tgw_panel.png",
+        "description": "【进入 T.G.W 面板】商店左下的 T.G.W 面板（面板上印着大号 T.G.W 字样）。原用图片模板 tgw_panel.png，TGW 等级提升后面板变金色导致模板失效，故改为 OCR 认「T.G.W」文字。",
+        "recognition": "OCR",
         "roi": [
             5,
             495,
@@ -411,7 +410,8 @@
             "DClickHome"
         ],
         "timeout": 20000,
-        "post_delay": 2500
+        "post_delay": 2500,
+        "expected": "T\\.G\\.W"
     },
     "DClaimDaily": {
         "description": "T.G.W CARD 页右下：领取每日奖励（小型LIVE BOOST饮料×1）。",
