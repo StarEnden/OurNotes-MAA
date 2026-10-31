@@ -1,6 +1,6 @@
 {
   "files": {
-    "interface.json": 1792901229699,
+    "interface.json": 1793459072712,
     "logo.ico": 1791041365247,
     "resource/announcement/使用须知.md": 1792248524538,
     "resource/image/claim_daily_btn.png": 1791036711562,
@@ -43,14 +43,14 @@
     "resource/pipeline/daily_twg.json": 1793458560485,
     "resource/pipeline/free_live.json": 1792859687840,
     "resource/pipeline/gift_box.json": 1791708558211,
-    "resource/pipeline/launch_game.json": 1792856552886,
+    "resource/pipeline/launch_game.json": 1793459054896,
     "resource/pipeline/missions.json": 1791708558212,
     "resource/pipeline/ournotes.json": 1791708311590,
     "resource/pipeline/pass_pt.json": 1792857090386,
     "resource/pipeline/recruit.json": 1792909472941,
     "resource/pipeline/studio.json": 1792857007245
   },
-  "generated_at": 1793458707925,
+  "generated_at": 1793459073094,
   "generator": "ournotes-maa tools/resource_check.py",
-  "version": "0.1.12"
+  "version": "0.1.13"
 }
