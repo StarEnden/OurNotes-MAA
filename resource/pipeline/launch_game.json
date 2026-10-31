@@ -12,6 +12,7 @@
             "LaunchTouch",
             "LaunchSkipLoginBonus",
             "LaunchVideoSkipOK",
+            "LaunchAdTopX",
             "LaunchNoticeClose",
             "LaunchSongSplash",
             "LaunchDateChange",
@@ -333,6 +334,7 @@
             "LaunchTouch",
             "LaunchSkipLoginBonus",
             "LaunchVideoSkipOK",
+            "LaunchAdTopX",
             "LaunchNoticeClose",
             "LaunchSongSplash",
             "LaunchDateChange",
@@ -343,5 +345,27 @@
             "LaunchBootWait"
         ],
         "timeout": 3000
+    },
+    "LaunchAdTopX": {
+        "description": "【礼包广告·右上角 ×】1.1.0 起登录可能弹「万圣节礼包登场！」礼包广告：没有任何文字按钮，只有右上角一个 ×（实测白十字像素位于 1226~1252 / 26~52）。识别串必须用**广告标题全文**——主界面横幅上也有「礼包登场」四个字，用短串会误命中主界面并点到右上角的通知菜单图标。",
+        "recognition": "OCR",
+        "expected": "万圣节礼包登场|萬聖節禮包登場",
+        "roi": [
+            180,
+            40,
+            920,
+            220
+        ],
+        "target": [
+            1220,
+            20,
+            40,
+            40
+        ],
+        "action": "Click",
+        "next": [
+            "LaunchGame"
+        ],
+        "timeout": 6000
     }
 }
