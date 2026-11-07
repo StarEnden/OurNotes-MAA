@@ -363,6 +363,8 @@
         "description": "【TWG 积分 + 每日奖励】一次进商店全领：主界面→商店→T.G.W 页→领取积分→关弹窗→领取每日奖励→确认→回主页。2026-10-02 由两条链合并。",
         "recognition": "DirectHit",
         "next": [
+            "TWGGateHome",
+            "TWGGoHome",
             "LaunchStorySkip",
             "LaunchDateChange",
             "MaintenanceStop",
@@ -501,6 +503,8 @@
         "description": "【领取商店每日火 Live Bonus】独立任务入口：主界面 → 商店 → 左栏「T.G.W CARD 专享商品目录」→ 滚到列表底部 → 领取「每日 Live Bonus」（小型LIVE BOOST饮料×1，免费）→ 确认 → 回主页。已领过时该项盖 SOLD OUT 章，则只记录不点击并直接返回（幂等，每日 23:00 重置）。",
         "recognition": "DirectHit",
         "next": [
+            "LBGateHome",
+            "LBGoHome",
             "LaunchStorySkip",
             "LaunchDateChange",
             "MaintenanceStop",
@@ -703,5 +707,113 @@
         "next": [],
         "timeout": 10000,
         "expected": "演出"
+    },
+    "TWGGateHome": {
+        "description": "【归位①】确认底部导航「演出」在位（= 当前在主界面）。命中则直接执行原链路；不命中说明停在别的页面，交给下一个候选节点先回主页。",
+        "recognition": "OCR",
+        "expected": "演出",
+        "roi": [
+            1020,
+            620,
+            200,
+            75
+        ],
+        "action": "DoNothing",
+        "next": [
+            "LaunchStorySkip",
+            "LaunchDateChange",
+            "MaintenanceStop",
+            "DClickShop"
+        ],
+        "timeout": 3000
+    },
+    "TWGGoHome": {
+        "description": "【归位②】点左上角主页图标回主界面。点完由「归位③」再确认一次。",
+        "recognition": "TemplateMatch",
+        "roi": [
+            110,
+            3,
+            85,
+            65
+        ],
+        "template": "home_icon.png",
+        "action": "Click",
+        "next": [
+            "TWGGateHome2"
+        ],
+        "timeout": 8000
+    },
+    "TWGGateHome2": {
+        "description": "【归位③】回主页后再次确认底部导航「演出」。无论是否命中都继续走原链路，避免卡死。",
+        "recognition": "OCR",
+        "expected": "演出",
+        "roi": [
+            1020,
+            620,
+            200,
+            75
+        ],
+        "action": "DoNothing",
+        "next": [
+            "LaunchStorySkip",
+            "LaunchDateChange",
+            "MaintenanceStop",
+            "DClickShop"
+        ],
+        "timeout": 6000
+    },
+    "LBGateHome": {
+        "description": "【归位①】确认底部导航「演出」在位（= 当前在主界面）。命中则直接执行原链路；不命中说明停在别的页面，交给下一个候选节点先回主页。",
+        "recognition": "OCR",
+        "expected": "演出",
+        "roi": [
+            1020,
+            620,
+            200,
+            75
+        ],
+        "action": "DoNothing",
+        "next": [
+            "LaunchStorySkip",
+            "LaunchDateChange",
+            "MaintenanceStop",
+            "SClickShop"
+        ],
+        "timeout": 3000
+    },
+    "LBGoHome": {
+        "description": "【归位②】点左上角主页图标回主界面。点完由「归位③」再确认一次。",
+        "recognition": "TemplateMatch",
+        "roi": [
+            110,
+            3,
+            85,
+            65
+        ],
+        "template": "home_icon.png",
+        "action": "Click",
+        "next": [
+            "LBGateHome2"
+        ],
+        "timeout": 8000
+    },
+    "LBGateHome2": {
+        "description": "【归位③】回主页后再次确认底部导航「演出」。无论是否命中都继续走原链路，避免卡死。",
+        "recognition": "OCR",
+        "expected": "演出",
+        "roi": [
+            1020,
+            620,
+            200,
+            75
+        ],
+        "action": "DoNothing",
+        "next": [
+            "LaunchStorySkip",
+            "LaunchDateChange",
+            "MaintenanceStop",
+            "SClickShop"
+        ],
+        "timeout": 6000
     }
 }

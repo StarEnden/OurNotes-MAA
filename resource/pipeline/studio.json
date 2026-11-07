@@ -4,6 +4,8 @@
         "recognition": "DirectHit",
         "action": "DoNothing",
         "next": [
+            "STGateHome",
+            "STGoHome",
             "LaunchStorySkip",
             "LaunchDateChange",
             "StudioOnHome",
@@ -221,5 +223,63 @@
             "StudioTutorialClose"
         ],
         "post_delay": 1300
+    },
+    "STGateHome": {
+        "description": "【归位①】确认底部导航「演出」在位（= 当前在主界面）。命中则直接执行原链路；不命中说明停在别的页面，交给下一个候选节点先回主页。",
+        "recognition": "OCR",
+        "expected": "演出",
+        "roi": [
+            1020,
+            620,
+            200,
+            75
+        ],
+        "action": "DoNothing",
+        "next": [
+            "LaunchStorySkip",
+            "LaunchDateChange",
+            "StudioOnHome",
+            "StudioOnPage",
+            "StudioRewardTitle",
+            "StudioDone"
+        ],
+        "timeout": 3000
+    },
+    "STGoHome": {
+        "description": "【归位②】点左上角主页图标回主界面。点完由「归位③」再确认一次。",
+        "recognition": "TemplateMatch",
+        "roi": [
+            110,
+            3,
+            85,
+            65
+        ],
+        "template": "home_icon.png",
+        "action": "Click",
+        "next": [
+            "STGateHome2"
+        ],
+        "timeout": 8000
+    },
+    "STGateHome2": {
+        "description": "【归位③】回主页后再次确认底部导航「演出」。无论是否命中都继续走原链路，避免卡死。",
+        "recognition": "OCR",
+        "expected": "演出",
+        "roi": [
+            1020,
+            620,
+            200,
+            75
+        ],
+        "action": "DoNothing",
+        "next": [
+            "LaunchStorySkip",
+            "LaunchDateChange",
+            "StudioOnHome",
+            "StudioOnPage",
+            "StudioRewardTitle",
+            "StudioDone"
+        ],
+        "timeout": 6000
     }
 }

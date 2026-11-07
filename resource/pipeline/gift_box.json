@@ -4,6 +4,8 @@
         "recognition": "DirectHit",
         "action": "DoNothing",
         "next": [
+            "GIFTGateHome",
+            "GIFTGoHome",
             "LaunchStorySkip",
             "LaunchDateChange",
             "GiftPopupOK",
@@ -62,15 +64,27 @@
         ],
         "timeout": 8000
     },
-
     "GiftClaimLitGate": {
         "description": "【礼物盒·亮色门禁】同通行证：没有文字判据，只有「一键领取」按钮亮不亮。ColorMatch(HSV) 只框那个按钮，灰态 0 像素、亮态模板 11981 像素。命中=有礼物可领 → GiftClaim；没命中 → 直接 GiftClose 收尾。",
         "recognition": "ColorMatch",
         "method": 40,
-        "lower": [95, 60, 200],
-        "upper": [125, 215, 255],
+        "lower": [
+            95,
+            60,
+            200
+        ],
+        "upper": [
+            125,
+            215,
+            255
+        ],
         "count": 300,
-        "roi": [690, 620, 200, 60],
+        "roi": [
+            690,
+            620,
+            200,
+            60
+        ],
         "action": "DoNothing",
         "next": [
             "GiftClaim"
@@ -169,5 +183,63 @@
         "action": "DoNothing",
         "next": [],
         "timeout": 10000
+    },
+    "GIFTGateHome": {
+        "description": "【归位①】确认底部导航「演出」在位（= 当前在主界面）。命中则直接执行原链路；不命中说明停在别的页面，交给下一个候选节点先回主页。",
+        "recognition": "OCR",
+        "expected": "演出",
+        "roi": [
+            1020,
+            620,
+            200,
+            75
+        ],
+        "action": "DoNothing",
+        "next": [
+            "LaunchStorySkip",
+            "LaunchDateChange",
+            "GiftPopupOK",
+            "GiftOnHome",
+            "GiftOnPage",
+            "GiftDone"
+        ],
+        "timeout": 3000
+    },
+    "GIFTGoHome": {
+        "description": "【归位②】点左上角主页图标回主界面。点完由「归位③」再确认一次。",
+        "recognition": "TemplateMatch",
+        "roi": [
+            110,
+            3,
+            85,
+            65
+        ],
+        "template": "home_icon.png",
+        "action": "Click",
+        "next": [
+            "GIFTGateHome2"
+        ],
+        "timeout": 8000
+    },
+    "GIFTGateHome2": {
+        "description": "【归位③】回主页后再次确认底部导航「演出」。无论是否命中都继续走原链路，避免卡死。",
+        "recognition": "OCR",
+        "expected": "演出",
+        "roi": [
+            1020,
+            620,
+            200,
+            75
+        ],
+        "action": "DoNothing",
+        "next": [
+            "LaunchStorySkip",
+            "LaunchDateChange",
+            "GiftPopupOK",
+            "GiftOnHome",
+            "GiftOnPage",
+            "GiftDone"
+        ],
+        "timeout": 6000
     }
 }
