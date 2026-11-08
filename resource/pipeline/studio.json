@@ -161,7 +161,7 @@
         "timeout": 10000
     },
     "StudioRewardTitle": {
-        "description": "【奖励弹窗连点翻页】领奖后是**一串**\"点一下翻一页\"的弹窗：录音室练习奖励 → LEVEL UP(练习LV) → 再一个录音室练习奖励 …。这些页的确认按钮 OCR 读不出（读成 @}）；实测**点 1080p(960,860)→720p(640,573)** 必定关闭（试第一个点就成功）。注意：不要用 expected=OK 的节点去接（实测 OK|0K|Ok 会误命中 LEVEL UP 并点到面板中央，空转）。max_hit=10 防死循环。",
+        "description": "【录音室奖励弹窗 1/6】1.1.0 实测会连出多个奖励弹窗，用线性链逐个处理（不能成环，否则被判 error handling loop）。本节点只识别标题。",
         "recognition": "OCR",
         "expected": "录音室练习奖励|获得奖励|LEVEL ?UP|练习LV|錄音室練習獎勵|獲得獎勵|練習LV",
         "roi": [
@@ -170,18 +170,13 @@
             900,
             200
         ],
-        "action": "Click",
-        "target": [
-            640,
-            573
-        ],
-        "max_hit": 10,
+        "action": "DoNothing",
         "next": [
-            "StudioRewardTitle",
+            "StudioRewardOK",
+            "StudioRewardTitle2",
             "StudioClickHome"
         ],
-        "timeout": 6000,
-        "post_delay": 2500
+        "timeout": 6000
     },
     "StudioTutorialClose": {
         "description": "【说明页·关闭兜底】点左下「关闭」(474,639) 退出说明页。⚠️ 同样受 Maa 点击在该层不稳定的影响；失败即 StudioDone 收尾，不重试不进循环。",
@@ -279,6 +274,196 @@
             "StudioOnPage",
             "StudioRewardTitle",
             "StudioDone"
+        ],
+        "timeout": 6000
+    },
+    "StudioRewardOK": {
+        "description": "【录音室奖励弹窗·OK 1】按 OCR 点 OK（1.1.0 实测 (963,660)，不写死坐标）。",
+        "recognition": "OCR",
+        "expected": "^OK$",
+        "roi": [
+            700,
+            600,
+            520,
+            120
+        ],
+        "action": "Click",
+        "next": [
+            "StudioRewardTitle2",
+            "StudioClickHome"
+        ],
+        "timeout": 6000
+    },
+    "StudioRewardTitle2": {
+        "description": "【录音室奖励弹窗 2/6】1.1.0 实测会连出多个奖励弹窗，用线性链逐个处理（不能成环，否则被判 error handling loop）。本节点只识别标题。",
+        "recognition": "OCR",
+        "expected": "录音室练习奖励|获得奖励|LEVEL ?UP|练习LV|錄音室練習獎勵|獲得獎勵|練習LV",
+        "roi": [
+            40,
+            5,
+            900,
+            200
+        ],
+        "action": "DoNothing",
+        "next": [
+            "StudioRewardOK2",
+            "StudioRewardTitle3",
+            "StudioClickHome"
+        ],
+        "timeout": 6000
+    },
+    "StudioRewardOK2": {
+        "description": "【录音室奖励弹窗·OK 2】按 OCR 点 OK（1.1.0 实测 (963,660)，不写死坐标）。",
+        "recognition": "OCR",
+        "expected": "^OK$",
+        "roi": [
+            700,
+            600,
+            520,
+            120
+        ],
+        "action": "Click",
+        "next": [
+            "StudioRewardTitle3",
+            "StudioClickHome"
+        ],
+        "timeout": 6000
+    },
+    "StudioRewardTitle3": {
+        "description": "【录音室奖励弹窗 3/6】1.1.0 实测会连出多个奖励弹窗，用线性链逐个处理（不能成环，否则被判 error handling loop）。本节点只识别标题。",
+        "recognition": "OCR",
+        "expected": "录音室练习奖励|获得奖励|LEVEL ?UP|练习LV|錄音室練習獎勵|獲得獎勵|練習LV",
+        "roi": [
+            40,
+            5,
+            900,
+            200
+        ],
+        "action": "DoNothing",
+        "next": [
+            "StudioRewardOK3",
+            "StudioRewardTitle4",
+            "StudioClickHome"
+        ],
+        "timeout": 6000
+    },
+    "StudioRewardOK3": {
+        "description": "【录音室奖励弹窗·OK 3】按 OCR 点 OK（1.1.0 实测 (963,660)，不写死坐标）。",
+        "recognition": "OCR",
+        "expected": "^OK$",
+        "roi": [
+            700,
+            600,
+            520,
+            120
+        ],
+        "action": "Click",
+        "next": [
+            "StudioRewardTitle4",
+            "StudioClickHome"
+        ],
+        "timeout": 6000
+    },
+    "StudioRewardTitle4": {
+        "description": "【录音室奖励弹窗 4/6】1.1.0 实测会连出多个奖励弹窗，用线性链逐个处理（不能成环，否则被判 error handling loop）。本节点只识别标题。",
+        "recognition": "OCR",
+        "expected": "录音室练习奖励|获得奖励|LEVEL ?UP|练习LV|錄音室練習獎勵|獲得獎勵|練習LV",
+        "roi": [
+            40,
+            5,
+            900,
+            200
+        ],
+        "action": "DoNothing",
+        "next": [
+            "StudioRewardOK4",
+            "StudioRewardTitle5",
+            "StudioClickHome"
+        ],
+        "timeout": 6000
+    },
+    "StudioRewardOK4": {
+        "description": "【录音室奖励弹窗·OK 4】按 OCR 点 OK（1.1.0 实测 (963,660)，不写死坐标）。",
+        "recognition": "OCR",
+        "expected": "^OK$",
+        "roi": [
+            700,
+            600,
+            520,
+            120
+        ],
+        "action": "Click",
+        "next": [
+            "StudioRewardTitle5",
+            "StudioClickHome"
+        ],
+        "timeout": 6000
+    },
+    "StudioRewardTitle5": {
+        "description": "【录音室奖励弹窗 5/6】1.1.0 实测会连出多个奖励弹窗，用线性链逐个处理（不能成环，否则被判 error handling loop）。本节点只识别标题。",
+        "recognition": "OCR",
+        "expected": "录音室练习奖励|获得奖励|LEVEL ?UP|练习LV|錄音室練習獎勵|獲得獎勵|練習LV",
+        "roi": [
+            40,
+            5,
+            900,
+            200
+        ],
+        "action": "DoNothing",
+        "next": [
+            "StudioRewardOK5",
+            "StudioRewardTitle6",
+            "StudioClickHome"
+        ],
+        "timeout": 6000
+    },
+    "StudioRewardOK5": {
+        "description": "【录音室奖励弹窗·OK 5】按 OCR 点 OK（1.1.0 实测 (963,660)，不写死坐标）。",
+        "recognition": "OCR",
+        "expected": "^OK$",
+        "roi": [
+            700,
+            600,
+            520,
+            120
+        ],
+        "action": "Click",
+        "next": [
+            "StudioRewardTitle6",
+            "StudioClickHome"
+        ],
+        "timeout": 6000
+    },
+    "StudioRewardTitle6": {
+        "description": "【录音室奖励弹窗 6/6】1.1.0 实测会连出多个奖励弹窗，用线性链逐个处理（不能成环，否则被判 error handling loop）。本节点只识别标题。",
+        "recognition": "OCR",
+        "expected": "录音室练习奖励|获得奖励|LEVEL ?UP|练习LV|錄音室練習獎勵|獲得獎勵|練習LV",
+        "roi": [
+            40,
+            5,
+            900,
+            200
+        ],
+        "action": "DoNothing",
+        "next": [
+            "StudioRewardOK6",
+            "StudioClickHome"
+        ],
+        "timeout": 6000
+    },
+    "StudioRewardOK6": {
+        "description": "【录音室奖励弹窗·OK 6】按 OCR 点 OK（1.1.0 实测 (963,660)，不写死坐标）。",
+        "recognition": "OCR",
+        "expected": "^OK$",
+        "roi": [
+            700,
+            600,
+            520,
+            120
+        ],
+        "action": "Click",
+        "next": [
+            "StudioClickHome"
         ],
         "timeout": 6000
     }
