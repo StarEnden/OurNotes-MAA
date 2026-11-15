@@ -2,7 +2,7 @@
   "files": {
     "interface.json": 1794717512036,
     "logo.ico": 1791041365247,
-    "resource/announcement/使用须知.md": 1792248524538,
+    "resource/announcement/使用须知.md": 1794718219071,
     "resource/image/claim_daily_btn.png": 1791036711562,
     "resource/image/claim_points_btn.png": 1791036711563,
     "resource/image/daily_tag.png": 1791036711563,
@@ -50,7 +50,7 @@
     "resource/pipeline/recruit.json": 1792909472941,
     "resource/pipeline/studio.json": 1794119224991
   },
-  "generated_at": 1794717514635,
+  "generated_at": 1794718242140,
   "generator": "ournotes-maa tools/resource_check.py",
   "version": "0.1.16"
 }
