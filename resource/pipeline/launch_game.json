@@ -335,6 +335,7 @@
             "LaunchSkipLoginBonus",
             "LaunchVideoSkipOK",
             "LaunchAdTopX",
+            "LaunchActivityAdX",
             "LaunchNoticeClose",
             "LaunchSongSplash",
             "LaunchDateChange",
@@ -367,5 +368,27 @@
             "LaunchGame"
         ],
         "timeout": 6000
+    },
+    "LaunchActivityAdX": {
+        "description": "【活动广告·右上角 ×】1.1.0/1.1.x 登录时会弹活动宣传浮层（实测文案形如「流转之舞 活动举办中！月色之下 成员&留影登场！」），无任何文字按钮，只有右上角 ×。roi 限定屏幕中上部：主界面的「激奏舞台…举办中」横幅在左下，不会误命中。即使误点右上角也只会打开公告，LaunchNoticeClose 会兜底关掉。",
+        "recognition": "OCR",
+        "expected": "活动举办中|活動舉辦中|活动举办中！",
+        "roi": [
+            300,
+            40,
+            700,
+            220
+        ],
+        "target": [
+            1190,
+            10,
+            90,
+            60
+        ],
+        "action": "Click",
+        "next": [
+            "LaunchGame"
+        ],
+        "timeout": 3000
     }
 }
