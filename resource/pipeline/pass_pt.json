@@ -236,6 +236,7 @@
             "PassClaimTop"
         ],
         "on_error": [
+            "PassOtherTracks",
             "PassClickHome"
         ],
         "timeout": 3000
@@ -345,10 +346,12 @@
         ],
         "action": "Click",
         "on_error": [
+            "PassOtherTracks",
             "PassClickHome"
         ],
         "next": [
             "PassClaimTopLitGate2",
+            "PassOtherTracks",
             "PassClickHome"
         ],
         "timeout": 8000,
@@ -507,6 +510,84 @@
         ],
         "post_delay": 2500,
         "timeout": 3000
+    },
+    "PassOtherTracks": {
+        "description": "【多轨道收尾】通行证左侧可能同时有活动、开服纪念、赛季任务多条轨道；当前轨道领完后，依次点还没处理过的轨道，三条都试过才回主页。节点本身不点击。2026-11-21 真机实测：只领默认一条会留下活动/开服纪念红点。",
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "next": [
+            "PassTrackActivity",
+            "PassTrackSecond",
+            "PassTrackSeason",
+            "PassClickHome"
+        ],
+        "timeout": 3000
+    },
+    "PassTrackActivity": {
+        "description": "【轨道·活动】点左侧「活动」卡（你是丸君等活动轨道）。OCR 先认卡面「活动」，避免不在通行证列表时盲点；max_hit=1 每条轨道只进一次。",
+        "recognition": "OCR",
+        "expected": "活动|活動",
+        "roi": [
+            50,
+            80,
+            300,
+            160
+        ],
+        "action": "Click",
+        "target": [
+            167,
+            153
+        ],
+        "max_hit": 1,
+        "next": [
+            "PassOnPass"
+        ],
+        "post_delay": 2500,
+        "timeout": 5000
+    },
+    "PassTrackSecond": {
+        "description": "【轨道·开服纪念】点左侧第二张「开服纪念 任务通行证」卡。OCR 认「纪念」即可：2026-11-21 真机实测框架把「开服纪念」读成「学办纪念」，用全词会漏；max_hit=1。",
+        "recognition": "OCR",
+        "expected": "纪念|紀念",
+        "roi": [
+            50,
+            220,
+            300,
+            320
+        ],
+        "action": "Click",
+        "target": [
+            167,
+            287
+        ],
+        "max_hit": 1,
+        "next": [
+            "PassOnPass"
+        ],
+        "post_delay": 2500,
+        "timeout": 5000
+    },
+    "PassTrackSeason": {
+        "description": "【轨道·赛季任务】点左侧第三张「赛季任务通行证 Season 1」卡。OCR 认「赛季任务/Season」，max_hit=1。",
+        "recognition": "OCR",
+        "expected": "赛季任务|賽季任務|Season",
+        "roi": [
+            50,
+            350,
+            300,
+            450
+        ],
+        "action": "Click",
+        "target": [
+            167,
+            413
+        ],
+        "max_hit": 1,
+        "next": [
+            "PassOnPass"
+        ],
+        "post_delay": 2500,
+        "timeout": 5000
     },
     "PASSGateHome": {
         "description": "【归位①】确认底部导航「演出」在位（= 当前在主界面）。命中则直接执行原链路；不命中说明停在别的页面，交给下一个候选节点先回主页。",
