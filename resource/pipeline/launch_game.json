@@ -11,6 +11,7 @@
             "LaunchTapToStart",
             "LaunchTouch",
             "LaunchSkipLoginBonus",
+            "LaunchFeatureUnlockClose",
             "LaunchVideoSkipOK",
             "LaunchAdTopX",
             "LaunchActivityAdX",
@@ -56,6 +57,27 @@
             70
         ],
         "action": "Click",
+        "next": [
+            "LaunchGame"
+        ],
+        "timeout": 8000,
+        "post_delay": 1500
+    },
+    "LaunchFeatureUnlockClose": {
+        "description": "【新号/切号·功能解锁弹窗】登录奖励跳过后可能弹「激奏舞台功能解锁」等全屏提示（无 SKIP，只有「关闭」/「移动到激奏舞台」）。2026-11-21 切新号实测：LaunchGame 原链路没有这个节点，会卡在这里直到 4000。OCR 只认标题「XX功能解锁」，显式点左下「关闭」中心 [498,597]，不碰右侧「移动到…」按钮。",
+        "recognition": "OCR",
+        "expected": ".*功能解锁.*|.*功能解鎖.*",
+        "roi": [
+            480,
+            110,
+            640,
+            120
+        ],
+        "action": "Click",
+        "target": [
+            498,
+            597
+        ],
         "next": [
             "LaunchGame"
         ],
@@ -334,6 +356,7 @@
             "LaunchTapToStart",
             "LaunchTouch",
             "LaunchSkipLoginBonus",
+            "LaunchFeatureUnlockClose",
             "LaunchVideoSkipOK",
             "LaunchAdTopX",
             "LaunchActivityAdX",

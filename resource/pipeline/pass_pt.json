@@ -311,7 +311,8 @@
             "PassTabNormal",
             "PassDailyClose"
         ],
-        "timeout": 8000
+        "timeout": 8000,
+        "post_delay": 3000
     },
     "PassPopupOK": {
         "description": "入口通用弹窗确认（只认 OK 文字）：点掉挡路的随机弹窗后才好识别页面。max_hit=6。",
