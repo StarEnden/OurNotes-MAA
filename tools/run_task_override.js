@@ -3,6 +3,7 @@
 // 例:   node run_task_override.js LaunchGame '{"LaunchClientApp":{"enabled":true}}'
 const path = require('path');
 const { MAA_BIN, ADB, ADDR, PROJECT } = require('./config');
+const { attachAgent } = require('./agent_runtime');
 
 process.chdir(MAA_BIN);
 const maa = require(path.join(MAA_BIN, 'MaaNode.node'));
@@ -37,11 +38,15 @@ async function main() {
     tskr.controller = ctrl;
     tskr.resource = res;
 
+    const agent = await attachAgent(maa, res, tskr, { verbose: process.env.OURNOTES_AGENT_VERBOSE === '1' });
+    if (agent.enabled) console.log(`--- 运行审计 → ${agent.logPath} ---`);
+
     console.log(`--- 开始执行任务 ${entry}${override ? '（含 override）' : ''} ---`);
     if (override) console.log('override =', JSON.stringify(override));
     const r = override ? await tskr.post_task(entry, override).wait() : await tskr.post_task(entry).wait();
     const used = ((Date.now() - t0) / 1000).toFixed(1);
     console.log(`--- 任务结束 status=${r.status}（3000=成功） 用时 ${used}s ---`);
+    await agent.close();
     process.exit(r.status === 3000 ? 0 : 1);
 }
 main().catch(e => { console.error('异常', e); process.exit(1); });

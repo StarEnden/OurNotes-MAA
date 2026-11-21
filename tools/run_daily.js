@@ -3,6 +3,7 @@
 //       node tools/run_daily.js TWGPoints TWGDaily   // 只跑指定任务
 const path = require('path');
 const { MAA_BIN, ADB, ADDR, PROJECT } = require('./config');
+const { attachAgent, dailyLogPath } = require('./agent_runtime');
 
 process.chdir(MAA_BIN);
 const maa = require(path.join(MAA_BIN, 'MaaNode.node'));
@@ -27,7 +28,7 @@ async function main() {
 
     const summary = [];
 
-    async function runEntry(ctrl, res, entry) {
+    async function runEntry(ctrl, res, entry, opts = {}) {
         const tskr = new maa.Tasker();
         const hits = [];
         tskr.add_context_sink((_, m) => {
@@ -36,14 +37,18 @@ async function main() {
         });
         tskr.controller = ctrl;
         tskr.resource = res;
+        const agent = opts.record === false
+            ? { enabled: false, logPath: dailyLogPath(), async close() { /* 不记录 */ } }
+            : await attachAgent(maa, res, tskr, { verbose: process.env.OURNOTES_AGENT_VERBOSE === '1' });
         const result = await tskr.post_task(entry).wait();
-        return { result, hits };
+        await agent.close();
+        return { result, hits, logPath: agent.logPath };
     }
 
     for (const entry of tasks) {
         if (entry !== 'LaunchGame') {
             console.log(`\n--- 确认主界面：${entry} ---`);
-            const gate = await runEntry(ctrl, res, 'HomeConfirm');
+            const gate = await runEntry(ctrl, res, 'HomeConfirm', { record: false });
             if (gate.result.status !== 3000) {
                 console.error(`❌ ${entry} 跳过：当前未确认在主界面（门禁 status=${gate.result.status}）`);
                 summary.push({ entry, status: 4000, skipped: true, reason: 'home_not_confirmed', hits: gate.hits.length, used: '0.0' });
@@ -67,6 +72,7 @@ async function main() {
     }
     const failed = summary.filter(s => s.status !== 3000).length;
     console.log(`\n结果：${summary.length - failed}/${summary.length} 个任务成功`);
+    console.log(`运行审计：${dailyLogPath()}${process.env.OURNOTES_AGENT === '0' ? '（已关闭）' : ''}`);
     process.exit(failed ? 1 : 0);
 }
 main().catch(e => { console.error('异常', e); process.exit(1); });
