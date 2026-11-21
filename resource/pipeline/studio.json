@@ -130,7 +130,7 @@
         "post_delay": 2200
     },
     "StudioClickHome": {
-        "description": "录音室页左上角主页（房子）图标 → 回主界面。",
+        "description": "录音室页左上角主页（房子）图标 → 回主界面。【2026-11-21 新账号】模板命中 [123,10,53,46] 后自动取点 [150,27] 落在图标左缘，点击无跳转，后续任务被门禁跳过；显式固定到图标中心 [168,40]。",
         "recognition": "TemplateMatch",
         "template": "home_icon.png",
         "roi": [
@@ -140,6 +140,10 @@
             65
         ],
         "action": "Click",
+        "target": [
+            168,
+            40
+        ],
         "next": [
             "StudioDone"
         ],
@@ -251,6 +255,10 @@
         ],
         "template": "home_icon.png",
         "action": "Click",
+        "target": [
+            168,
+            40
+        ],
         "next": [
             "STGateHome2"
         ],
