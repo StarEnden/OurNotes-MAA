@@ -260,7 +260,7 @@
         "post_delay": 3000
     },
     "PassClaimLitGate": {
-        "description": "【通行证任务页·一键领取可用】同上：颜色判定失效，改为识别「一键领取」文字。命中后才点 PassClaimDaily。",
+        "description": "【保留，不接】旧版「一键领取可用」OCR 闸门。1.1.0 灰按钮仍保留文字，OCR 无法判断可用状态，2026-11-21 起由 PassClaimDaily + PassTabNormal 取代；节点保留供以后做颜色闸门参考。",
         "recognition": "OCR",
         "expected": "一键领取|一鍵領取",
         "roi": [
@@ -276,7 +276,7 @@
         "timeout": 4000
     },
     "PassOnTasks": {
-        "description": "【通行证任务页】OCR 认「达成情况」→ 去领。next 三条正路：①有可领 → PassClaimDaily；②本页领不到 → 切「常规」页 PassTabNormal；③都领完 → PassDailyClose 收尾。",
+        "description": "【通行证任务页】OCR 认「达成情况」→ 先点一次「一键领取」（每日页）；若按钮是灰的、没有结算弹窗，就切左侧「常规」页再点一次；两页都领不到就关闭收尾。⚠️ 2026-11-21 真机实测：每日页 1/5 时「一键领取」是灰的，旧链只认文字不看可用状态，点了没反应后又在 PassDailyClose 打转（error handling loop detected）。现在用 PassClaimDaily 的 max_hit 控制点击次数，并用 PassTabNormal 兜底切页。",
         "recognition": "OCR",
         "expected": "达成情况|達成情況|達成状况|達成狀況",
         "roi": [
@@ -286,15 +286,15 @@
             60
         ],
         "action": "DoNothing",
-        "max_hit": 12,
+        "max_hit": 8,
         "next": [
-            "PassClaimLitGate",
+            "PassClaimDaily",
             "PassDailyClose"
         ],
         "timeout": 8000
     },
     "PassClaimDaily": {
-        "description": "【通行证任务页·领取】点底部「一键领取」一次性领完。⚠️ 不要用无 expected 的 OCR 点击：该 roi 里同时有「去挑战」按钮，会误点进演出。",
+        "description": "【通行证任务页·领取】点底部「一键领取」。⚠️ 按钮在无可领奖励时是灰的，但文字仍在，OCR 仍会命中；因此 max_hit=4 限制点击次数，点完没弹窗就由 PassTabNormal 切「常规」页，再没弹窗就 PassDailyClose 关闭。不要用无 expected 的 OCR 点击：该 roi 里同时有「去挑战」按钮，会误点进演出。",
         "recognition": "OCR",
         "expected": "一键领取|一鍵領取",
         "roi": [
@@ -304,8 +304,10 @@
             60
         ],
         "action": "Click",
+        "max_hit": 4,
         "next": [
             "PassDailyOK",
+            "PassTabNormal",
             "PassDailyClose"
         ],
         "timeout": 8000
@@ -485,8 +487,15 @@
         "timeout": 10000
     },
     "PassTabNormal": {
-        "description": "切到左侧「常规」标签（1080p (200,290) → 720p (133,193)）。仅切一次（max_hit=1），切完回 PassOnTasks 重新扫。",
-        "recognition": "DirectHit",
+        "description": "切到左侧「常规」标签（720p 目标 (133,193)）。2026-11-21 真机实测：常规页「达成情况 0/30」、一键领取同样是灰的，所以这里只负责切页，切完回 PassOnTasks 再判一次；OCR 先认「常规」文字，避免不在任务页时盲点。仅切一次（max_hit=1）。",
+        "recognition": "OCR",
+        "expected": "常规|常規",
+        "roi": [
+            95,
+            150,
+            180,
+            95
+        ],
         "action": "Click",
         "target": [
             133,
@@ -494,8 +503,7 @@
         ],
         "max_hit": 1,
         "next": [
-            "PassClaimLitGate",
-            "PassDailyClose"
+            "PassOnTasks"
         ],
         "post_delay": 2500,
         "timeout": 3000
