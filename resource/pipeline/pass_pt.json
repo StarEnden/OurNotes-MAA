@@ -335,7 +335,7 @@
         "post_delay": 2500
     },
     "PassDailyClose": {
-        "description": "【通行证·每日页关闭】关掉每日任务页。1.1.0 在无可领奖励时「一键领取」是灰的（颜色闸门不命中），故补 PassClickHome 兜底，避免整条链断在这里。",
+        "description": "【通行证·每日页关闭】关掉每日任务页。1.1.0 在无可领奖励时「一键领取」是灰的（颜色闸门不命中），故补 PassClickHome 兜底，避免整条链断在这里。【2026-11-21 新账号】OCR 框偏低，自动取点落到按钮下边缘（y=665）点空，任务 4000；显式固定到按钮中心 [498,620]。",
         "recognition": "OCR",
         "expected": "关闭|關閉|關開",
         "roi": [
@@ -345,6 +345,10 @@
             110
         ],
         "action": "Click",
+        "target": [
+            498,
+            620
+        ],
         "on_error": [
             "PassOtherTracks",
             "PassClickHome"
@@ -524,7 +528,7 @@
         "timeout": 3000
     },
     "PassTrackActivity": {
-        "description": "【轨道·活动】点左侧「活动」卡（你是丸君等活动轨道）。OCR 先认卡面「活动」，避免不在通行证列表时盲点；max_hit=1 每条轨道只进一次。",
+        "description": "【轨道·活动】点左侧「活动」卡（你是丸君等活动轨道）。OCR 先认卡面「活动」，避免不在通行证列表时盲点；max_hit=1 每条轨道只进一次。点卡后可能先弹「获得通行证pt」结算层，先交给 PassPtOK。",
         "recognition": "OCR",
         "expected": "活动|活動",
         "roi": [
@@ -540,15 +544,17 @@
         ],
         "max_hit": 1,
         "next": [
+            "PassPtOK",
+            "PassIntro",
             "PassOnPass"
         ],
         "post_delay": 2500,
         "timeout": 5000
     },
     "PassTrackSecond": {
-        "description": "【轨道·开服纪念】点左侧第二张「开服纪念 任务通行证」卡。OCR 认「纪念」即可：2026-11-21 真机实测框架把「开服纪念」读成「学办纪念」，用全词会漏；max_hit=1。",
+        "description": "【轨道·开服纪念】点左侧第二张「开服纪念 任务通行证」卡。OCR 只认单字「纪」：2026-11-21 新账号实测同一张卡会被切成「学办纪念」「美办纪念」「办纪」三种，用「纪念」二词会漏；ROI 只覆盖第二张卡标题带，单字不会误配。点卡后可能弹「获得通行证pt」，故 next 先接 PassPtOK；max_hit=1。",
         "recognition": "OCR",
-        "expected": "纪念|紀念",
+        "expected": "纪|紀",
         "roi": [
             50,
             220,
@@ -562,20 +568,22 @@
         ],
         "max_hit": 1,
         "next": [
+            "PassPtOK",
+            "PassIntro",
             "PassOnPass"
         ],
         "post_delay": 2500,
         "timeout": 5000
     },
     "PassTrackSeason": {
-        "description": "【轨道·赛季任务】点左侧第三张「赛季任务通行证 Season 1」卡。OCR 认「赛季任务/Season」，max_hit=1。",
+        "description": "【轨道·赛季任务】点左侧第三张「赛季任务通行证 Season 1」卡。OCR 认「赛季任务/Season」，max_hit=1；切轨道后若先弹 pt 结算层，交给 PassPtOK。⚠️ roi 是 [x,y,w,h]：原 [50,350,300,450] 超出 720 高，任务页会读到正文，收窄到卡片标题带 [50,370,300,80]。",
         "recognition": "OCR",
         "expected": "赛季任务|賽季任務|Season",
         "roi": [
             50,
-            350,
+            370,
             300,
-            450
+            80
         ],
         "action": "Click",
         "target": [
@@ -584,6 +592,8 @@
         ],
         "max_hit": 1,
         "next": [
+            "PassPtOK",
+            "PassIntro",
             "PassOnPass"
         ],
         "post_delay": 2500,
