@@ -517,88 +517,57 @@
         "timeout": 3000
     },
     "PassOtherTracks": {
-        "description": "【多轨道收尾】通行证左侧可能同时有活动、开服纪念、赛季任务多条轨道；当前轨道领完后，依次点还没处理过的轨道，三条都试过才回主页。节点本身不点击。2026-11-21 真机实测：只领默认一条会留下活动/开服纪念红点。",
+        "description": "【多轨道收尾·红点驱动】不再按固定三条轨道名单点。扫左侧栏红色角标：有红点就点最上面一张卡，领完回列表再扫；没有红点就回主页。红点由 PassRedTrackScan 负责，色值经 2026-11-21 真机礼物红点验证（RGB 241,48,48）。",
         "recognition": "DirectHit",
         "action": "DoNothing",
         "next": [
-            "PassTrackActivity",
-            "PassTrackSecond",
-            "PassTrackSeason",
+            "PassRedTrackScan",
             "PassClickHome"
         ],
         "timeout": 3000
     },
-    "PassTrackActivity": {
-        "description": "【轨道·活动】点左侧「活动」卡（你是丸君等活动轨道）。OCR 先认卡面「活动」，避免不在通行证列表时盲点；max_hit=1 每条轨道只进一次。点卡后可能先弹「获得通行证pt」结算层，先交给 PassPtOK。",
-        "recognition": "OCR",
-        "expected": "活动|活動",
+    "PassRedTrackScan": {
+        "description": "【轨道·红点扫描】在左侧轨道栏找红色未领角标（ColorMatch，RGB 180-255 / 20-120 / 20-120，connected，count 50）。角标 x 会随卡片宽度变化（活动卡在 x≈283、开服纪念在 x≈234），但卡面横跨 x≈53-300，故 target_offset [-116,60,0,0] 把点击点移到角标左下：实测两次落点 x≈167/132，均在卡面内，y 落到卡中部。点卡面才会切轨道（点角标本身无效，已实测）。max_hit=6 兜住最多 6 条轨道；每条轨道红点清掉后下一轮自然扫下一张。",
+        "recognition": "ColorMatch",
+        "method": 4,
+        "lower": [
+            180,
+            20,
+            20
+        ],
+        "upper": [
+            255,
+            120,
+            120
+        ],
         "roi": [
             50,
-            80,
+            70,
             300,
-            160
+            450
         ],
+        "count": 50,
+        "connected": true,
+        "order_by": "Vertical",
+        "index": 0,
         "action": "Click",
-        "target": [
-            167,
-            153
+        "target_offset": [
+            -116,
+            60,
+            0,
+            0
         ],
-        "max_hit": 1,
+        "max_hit": 6,
         "next": [
             "PassPtOK",
             "PassIntro",
             "PassOnPass"
         ],
         "post_delay": 2500,
-        "timeout": 5000
-    },
-    "PassTrackSecond": {
-        "description": "【轨道·开服纪念】点左侧第二张「开服纪念 任务通行证」卡。OCR 只认单字「纪」：2026-11-21 新账号实测同一张卡会被切成「学办纪念」「美办纪念」「办纪」三种，用「纪念」二词会漏；ROI 只覆盖第二张卡标题带，单字不会误配。点卡后可能弹「获得通行证pt」，故 next 先接 PassPtOK；max_hit=1。",
-        "recognition": "OCR",
-        "expected": "纪|紀",
-        "roi": [
-            50,
-            220,
-            300,
-            320
-        ],
-        "action": "Click",
-        "target": [
-            167,
-            287
-        ],
-        "max_hit": 1,
-        "next": [
-            "PassPtOK",
-            "PassIntro",
-            "PassOnPass"
-        ],
-        "post_delay": 2500,
-        "timeout": 5000
-    },
-    "PassTrackSeason": {
-        "description": "【轨道·赛季任务】点左侧第三张「赛季任务通行证 Season 1」卡。OCR 认「赛季任务/Season」，max_hit=1；切轨道后若先弹 pt 结算层，交给 PassPtOK。⚠️ roi 是 [x,y,w,h]：原 [50,350,300,450] 超出 720 高，任务页会读到正文，收窄到卡片标题带 [50,370,300,80]。",
-        "recognition": "OCR",
-        "expected": "赛季任务|賽季任務|Season",
-        "roi": [
-            50,
-            370,
-            300,
-            80
-        ],
-        "action": "Click",
-        "target": [
-            167,
-            413
-        ],
-        "max_hit": 1,
-        "next": [
-            "PassPtOK",
-            "PassIntro",
-            "PassOnPass"
-        ],
-        "post_delay": 2500,
-        "timeout": 5000
+        "timeout": 6000,
+        "on_error": [
+            "PassClickHome"
+        ]
     },
     "PASSGateHome": {
         "description": "【归位①】确认底部导航「演出」在位（= 当前在主界面）。命中则直接执行原链路；不命中说明停在别的页面，交给下一个候选节点先回主页。",
